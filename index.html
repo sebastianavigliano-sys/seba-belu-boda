@@ -370,7 +370,16 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
 </head>
 
 <body>
-
+<div class="theme-bar">
+  <div class="container theme-inner">
+    <div class="theme-title">Estilo</div>
+    <div class="theme-buttons">
+      <button class="tbtn" data-theme="romantic">Romántico</button>
+      <button class="tbtn" data-theme="minimal">Minimal</button>
+      <button class="tbtn" data-theme="glam">Glam</button>
+    </div>
+  </div>
+</div>
   <div class="container">
 
     <!-- HERO -->
@@ -542,6 +551,26 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
 
     document.getElementById("rsvpBtn").href = waLink;
   </script>
+// ===== THEME SWITCHER =====
+(function(){
+  const key = "seba_belu_theme";
+  const buttons = document.querySelectorAll(".tbtn");
 
+  function applyTheme(name){
+    document.body.classList.remove("theme-romantic","theme-minimal","theme-glam");
+    document.body.classList.add("theme-" + name);
+
+    buttons.forEach(b => b.classList.toggle("active", b.dataset.theme === name));
+    localStorage.setItem(key, name);
+  }
+
+  // Tema por defecto
+  const saved = localStorage.getItem(key);
+  applyTheme(saved || "romantic");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => applyTheme(btn.dataset.theme));
+  });
+})();
 </body>
 </html>
