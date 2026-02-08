@@ -238,19 +238,18 @@
     }
 
     /* =========================================================
-       GALERIA MASONRY (MOBILE-FIRST) - NO ROMPE NADA
-       - Usa CSS Columns (lo más estable en celular)
-       - Las imágenes quedan con altura natural (masonry real)
+       GALERIA MASONRY (MOBILE-FIRST)
        ========================================================= */
     .gallery{
       margin-top: 26px;
-      column-count: 2;         /* celu default */
+      column-count: 2;
       column-gap: 12px;
+      display: block;
     }
 
     .gallery img{
       width: 100%;
-      height: auto;            /* clave para masonry */
+      height: auto;
       display: block;
       margin: 0 0 12px;
       border-radius: 14px;
@@ -259,17 +258,13 @@
 
       cursor: zoom-in;
       transition: transform .22s ease, filter .22s ease;
-      break-inside: avoid;     /* ayuda */
+
+      break-inside: avoid;
       -webkit-column-break-inside: avoid;
       page-break-inside: avoid;
     }
 
-    .gallery img:active{
-      transform: scale(0.99);
-      filter: brightness(1.05);
-    }
-
-    @media(max-width: 380px){
+    @media(max-width: 320px){
       .gallery{ column-count: 1; }
     }
 
@@ -427,75 +422,32 @@
       .hero img{ height: 520px; }
       .countdown div{ min-width: 75px; }
     }
-    /* ===== FIX MASONRY MOBILE (pisar grid viejo) ===== */
-.gallery{
-  display: block !important;     /* mata el grid */
-  column-count: 2 !important;
-  column-gap: 12px !important;
-}
 
-.gallery img{
-  width: 100% !important;
-  height: auto !important;       /* clave masonry */
-  display: block !important;
-  margin: 0 0 12px !important;
-  break-inside: avoid !important;
-  -webkit-column-break-inside: avoid !important;
-  page-break-inside: avoid !important;
-}
+    /* =========================================================
+       MOVIMIENTO GALERIA: FORZADO Y VISIBLE (ANDROID/CHROME)
+       (ULTIMA MODIFICACION #1)
+       ========================================================= */
+    .gallery img{
+      transform: translateZ(0) !important;
+      will-change: transform !important;
+      backface-visibility: hidden !important;
+    }
 
-@media (max-width: 380px){
-  .gallery{ column-count: 1 !important; }
-}
+    .gallery img.zmove{
+      animation: zMove var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate !important;
+    }
 
-@media (min-width: 900px){
-  .gallery{ column-count: 3 !important; }
-}
-/* ===== FIX MASONRY CELU: SIEMPRE 2 COLUMNAS ===== */
-.gallery{
-  display: block !important;
-  column-count: 2 !important;
-  column-gap: 12px !important;
-}
+    @keyframes zMove{
+      0%   { transform: scale(1) translate(0px, 0px); }
+      100% { transform: scale(var(--z, 1.10)) translate(var(--tx, 0px), var(--ty, 0px)); }
+    }
 
-.gallery img{
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  margin: 0 0 12px !important;
-  break-inside: avoid !important;
-  -webkit-column-break-inside: avoid !important;
-  page-break-inside: avoid !important;
-}
-
-/* SOLO en celulares ultra chicos baja a 1 columna */
-@media(max-width: 320px){
-  .gallery{
-    column-count: 1 !important;
-  }
-}
-/* ===== MOVIMIENTO SUTIL EN GALERIA (SAFE) ===== */
-.gallery img{
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* cuando la animación está activa */
-.gallery img.zmove{
-  animation: zMove var(--dur, 10s) ease-in-out var(--delay, 0s) infinite alternate;
-}
-
-/* keyframes: zoom + micro desplazamiento */
-@keyframes zMove{
-  0%   { transform: scale(1) translate(0px, 0px); }
-  100% { transform: scale(var(--z, 1.06)) translate(var(--tx, 0px), var(--ty, 0px)); }
-}
-
-/* respeta accesibilidad / gente que desactiva animaciones */
-@media (prefers-reduced-motion: reduce){
-  .gallery img.zmove{ animation: none !important; }
-}
+    /* aunque el dispositivo pida "reduce motion", lo mantenemos */
+    @media (prefers-reduced-motion: reduce){
+      .gallery img.zmove{
+        animation: zMove var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate !important;
+      }
+    }
 
   </style>
 </head>
@@ -764,24 +716,25 @@
         if(e.key === "ArrowRight") next();
       });
     })();
-        // ===== GALERIA: MINI ZOOM ALEATORIO (SAFE) =====
+
+    // =========================================================
+    // GALERIA: MINI ZOOM ALEATORIO (ULTIMA MODIFICACION #2)
+    // =========================================================
     (function(){
       const imgs = document.querySelectorAll(".gallery img");
       if(!imgs.length) return;
 
-      // En celular, suave: pocos px y zoom chico
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
       function rnd(min, max){ return Math.random() * (max - min) + min; }
 
       imgs.forEach((img) => {
-        // valores sutiles
-        const z  = isMobile ? rnd(1.03, 1.06) : rnd(1.04, 1.08);
-        const tx = isMobile ? rnd(-6, 6) : rnd(-10, 10);
-        const ty = isMobile ? rnd(-6, 6) : rnd(-10, 10);
+        const z  = isMobile ? rnd(1.06, 1.12) : rnd(1.06, 1.14);
+        const tx = isMobile ? rnd(-12, 12) : rnd(-14, 14);
+        const ty = isMobile ? rnd(-12, 12) : rnd(-14, 14);
 
-        const dur = isMobile ? rnd(9, 14) : rnd(10, 16);
-        const delay = rnd(0, 4);
+        const dur = isMobile ? rnd(7.5, 12) : rnd(8, 13);
+        const delay = rnd(0, 2.5);
 
         img.style.setProperty("--z", z.toFixed(3));
         img.style.setProperty("--tx", tx.toFixed(1) + "px");
@@ -792,19 +745,17 @@
         img.classList.add("zmove");
       });
 
-      // Pausar animación si se abre el lightbox (si lo tenés)
+      // Pausar animación si se abre el lightbox
       const overlay = document.getElementById("lightboxOverlay");
       if(overlay){
         const toggle = () => {
           const paused = overlay.classList.contains("open");
           imgs.forEach(img => img.style.animationPlayState = paused ? "paused" : "running");
         };
-        // chequeo cada vez que se abre/cierra (simple y no invasivo)
         const obs = new MutationObserver(toggle);
         obs.observe(overlay, { attributes:true, attributeFilter:["class"] });
       }
     })();
-
   </script>
 
 </body>
