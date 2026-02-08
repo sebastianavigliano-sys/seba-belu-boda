@@ -451,6 +451,29 @@
 @media (min-width: 900px){
   .gallery{ column-count: 3 !important; }
 }
+/* ===== FIX MASONRY CELU: SIEMPRE 2 COLUMNAS ===== */
+.gallery{
+  display: block !important;
+  column-count: 2 !important;
+  column-gap: 12px !important;
+}
+
+.gallery img{
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 0 12px !important;
+  break-inside: avoid !important;
+  -webkit-column-break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+/* SOLO en celulares ultra chicos baja a 1 columna */
+@media(max-width: 320px){
+  .gallery{
+    column-count: 1 !important;
+  }
+}
 
   </style>
 </head>
