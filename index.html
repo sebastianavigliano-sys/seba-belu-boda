@@ -427,6 +427,31 @@
       .hero img{ height: 520px; }
       .countdown div{ min-width: 75px; }
     }
+    /* ===== FIX MASONRY MOBILE (pisar grid viejo) ===== */
+.gallery{
+  display: block !important;     /* mata el grid */
+  column-count: 2 !important;
+  column-gap: 12px !important;
+}
+
+.gallery img{
+  width: 100% !important;
+  height: auto !important;       /* clave masonry */
+  display: block !important;
+  margin: 0 0 12px !important;
+  break-inside: avoid !important;
+  -webkit-column-break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+@media (max-width: 380px){
+  .gallery{ column-count: 1 !important; }
+}
+
+@media (min-width: 900px){
+  .gallery{ column-count: 3 !important; }
+}
+
   </style>
 </head>
 
