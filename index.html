@@ -347,11 +347,11 @@
       letter-spacing: 1px;
     }
 
-    /* ===== BOTON MUSICA ===== */
+    /* ===== BOTON MUSICA (FIX ANDROID SAFE-AREA) ===== */
     #musicBtn{
       position: fixed;
-      bottom: 18px;
-      right: 18px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      right: calc(18px + env(safe-area-inset-right));
       z-index: 9999;
 
       background: rgba(255,255,255,.08);
@@ -369,6 +369,10 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 12px 30px rgba(0,0,0,.45);
       transition: .2s;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     #musicBtn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.35); }
@@ -661,24 +665,81 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== MUSICA ON/OFF =====
-    const music = document.getElementById("bgMusic");
-    const musicBtn = document.getElementById("musicBtn");
-    let playing = false;
+    // ===== MUSICA ON/OFF + AUTO START EN HISTORIA (ANDROID SAFE) =====
+    (function(){
+      const music = document.getElementById("bgMusic");
+      const musicBtn = document.getElementById("musicBtn");
+      const target = document.getElementById("historia");
+      if(!music || !musicBtn) return;
 
-    musicBtn.addEventListener("click", () => {
-      if(!playing){
-        music.play();
-        playing = true;
+      let playing = false;
+      let unlocked = false;   // se activa con el primer toque real
+      let tried = false;      // intentamos autoplay 1 vez
+
+      function setBtnPlayingUI(){
         musicBtn.classList.add("active");
         musicBtn.innerText = "⏸ Música";
-      }else{
-        music.pause();
-        playing = false;
+      }
+
+      function setBtnPausedUI(){
         musicBtn.classList.remove("active");
         musicBtn.innerText = "🎵 Música";
       }
-    });
+
+      async function startMusic(){
+        try{
+          await music.play();
+          playing = true;
+          setBtnPlayingUI();
+          return true;
+        }catch(e){
+          return false;
+        }
+      }
+
+      function stopMusic(){
+        music.pause();
+        playing = false;
+        setBtnPausedUI();
+      }
+
+      // Botón manual (lo que ya funcionaba)
+      musicBtn.addEventListener("click", async () => {
+        unlocked = true; // click = gesto válido
+        if(!playing){
+          const ok = await startMusic();
+          if(!ok) stopMusic();
+        }else{
+          stopMusic();
+        }
+      });
+
+      // Unlock global: primer toque en cualquier lado (esto “habilita” audio en Android)
+      function unlockOnce(){
+        unlocked = true;
+        document.removeEventListener("touchstart", unlockOnce);
+        document.removeEventListener("pointerdown", unlockOnce);
+      }
+      document.addEventListener("touchstart", unlockOnce, {passive:true});
+      document.addEventListener("pointerdown", unlockOnce, {passive:true});
+
+      // Autoplay al llegar a historia (solo si ya hubo unlock)
+      if(target){
+        const io = new IntersectionObserver(async (entries) => {
+          const e = entries[0];
+          if(!e.isIntersecting) return;
+          if(tried) return;
+          tried = true;
+
+          if(unlocked && !playing){
+            await startMusic();
+          }
+          io.disconnect();
+        }, { threshold: 0.6 });
+
+        io.observe(target);
+      }
+    })();
 
     // ===== STACK SLIDER (BLUR BACKGROUND) =====
     (function(){
@@ -744,43 +805,6 @@
       // inicializar blur con la primera foto
       setActive(0);
       start();
-    })();
-
-    // ===== AUTO-MUSICA AL LLEGAR A "HISTORIA" (con fallback) =====
-    (function(){
-      const music = document.getElementById("bgMusic");
-      const musicBtn = document.getElementById("musicBtn");
-      const target = document.getElementById("historia");
-      if(!music || !musicBtn || !target) return;
-
-      let tried = false;
-
-      function setBtnPlayingUI(){
-        musicBtn.classList.add("active");
-        musicBtn.innerText = "⏸ Música";
-      }
-
-      const io = new IntersectionObserver((entries) => {
-        const e = entries[0];
-        if(!e.isIntersecting) return;
-        if(tried) return;
-        tried = true;
-
-        const p = music.play();
-        if(p && typeof p.then === "function"){
-          p.then(() => {
-            setBtnPlayingUI();
-          }).catch(() => {
-            // si Android bloquea autoplay, queda el botón para tocar
-          });
-        } else {
-          setBtnPlayingUI();
-        }
-
-        io.disconnect();
-      }, { threshold: 0.6 });
-
-      io.observe(target);
     })();
 
     // ===== LIGHTBOX (queda por si reactivás miniaturas) =====
