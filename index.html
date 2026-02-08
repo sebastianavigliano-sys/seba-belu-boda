@@ -236,22 +236,81 @@
     }
 
     /* =========================================================
-       GALERIA MASONRY (MOBILE FIRST)
-       - Columns: estable en Android Chrome
+       STACK SLIDER (ESTABLE, PRO, MOBILE-FIRST)
+       ========================================================= */
+    .stack{
+      margin-top: 22px;
+      margin-bottom: 18px;
+    }
+
+    .stack-frame{
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+      background: rgba(255,255,255,.03);
+    }
+
+    @media(max-width: 480px){
+      .stack-frame{ height: 340px; }
+    }
+
+    .stack-img{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.08);
+      transition: opacity 900ms ease, transform 2200ms ease;
+      will-change: opacity, transform;
+    }
+
+    .stack-img.is-active{
+      opacity: 1;
+      transform: scale(1.0);
+    }
+
+    .stack-dots{
+      display:flex;
+      gap: 8px;
+      justify-content:center;
+      margin-top: 12px;
+    }
+
+    .stack-dot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.10);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .stack-dot.active{
+      background: var(--accent);
+      border-color: rgba(255,255,255,.10);
+    }
+
+    /* =========================================================
+       GALERIA MASONRY (ESTABLE, SIN ANIMACIONES RARAS)
        ========================================================= */
     .gallery{
-      margin-top: 26px;
+      margin-top: 18px;
       display: block;
       column-count: 2;
       column-gap: 12px;
     }
 
-    /* en celulares ultra chicos, 1 columna */
     @media(max-width: 320px){
       .gallery{ column-count: 1; }
     }
 
-    /* en pantallas grandes, 3 columnas */
     @media(min-width: 900px){
       .gallery{ column-count: 3; }
     }
@@ -272,34 +331,12 @@
       -webkit-column-break-inside: avoid;
       page-break-inside: avoid;
 
-      /* performance */
-      transform: translate3d(0,0,0);
-      will-change: transform;
-      backface-visibility: hidden;
+      transition: transform .18s ease, filter .18s ease;
     }
 
-    /* ===== MOVIMIENTO (CSS ONLY, GARANTIZADO) ===== */
-    .gallery img{
-      animation: zMove var(--dur, 11s) ease-in-out var(--delay, 0s) infinite alternate;
-      transform-origin: center center;
-    }
-
-    /* variaciones (se ve “orgánico” sin JS) */
-    .gallery img:nth-child(6n+1){ --z:1.10; --tx: 10px;  --ty:-8px;  --dur: 12s;  --delay: .2s; }
-    .gallery img:nth-child(6n+2){ --z:1.08; --tx:-8px;   --ty: 10px; --dur: 9.5s; --delay: 1.1s; }
-    .gallery img:nth-child(6n+3){ --z:1.12; --tx: 12px;  --ty: 8px;  --dur: 13s;  --delay: .6s; }
-    .gallery img:nth-child(6n+4){ --z:1.07; --tx:-12px;  --ty:-6px;  --dur: 10.5s;--delay: 1.6s; }
-    .gallery img:nth-child(6n+5){ --z:1.09; --tx: 6px;   --ty: 12px; --dur: 14s;  --delay: .9s; }
-    .gallery img:nth-child(6n){   --z:1.11; --tx:-10px;  --ty: 6px;  --dur: 9.8s; --delay: 2s; }
-
-    @keyframes zMove{
-      0%   { transform: scale(1) translate3d(0,0,0); }
-      100% { transform: scale(var(--z,1.10)) translate3d(var(--tx,0px), var(--ty,0px), 0); }
-    }
-
-    /* si alguien tiene “reducir animaciones”, lo respetamos (si querés NO respetarlo, te lo cambio) */
-    @media (prefers-reduced-motion: reduce){
-      .gallery img{ animation: none; }
+    .gallery img:active{
+      transform: scale(0.99);
+      filter: brightness(1.08);
     }
 
     /* ===== RSVP ===== */
@@ -521,6 +558,21 @@
       <h4>Un poquito de nuestra historia</h4>
       <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
 
+      <!-- STACK SLIDER (CUADRO PRO QUE CAMBIA SOLO) -->
+      <div class="stack">
+        <div class="stack-frame" id="stackFrame">
+          <img class="stack-img is-active" src="foto1.jpg" alt="Sebastián y Belén 1">
+          <img class="stack-img" src="foto2.jpg" alt="Sebastián y Belén 2">
+          <img class="stack-img" src="foto3.jpg" alt="Sebastián y Belén 3">
+          <img class="stack-img" src="foto4.jpg" alt="Sebastián y Belén 4">
+          <img class="stack-img" src="foto5.jpg" alt="Sebastián y Belén 5">
+          <img class="stack-img" src="foto6.jpg" alt="Sebastián y Belén 6">
+        </div>
+
+        <div class="stack-dots" id="stackDots" aria-label="Galería destacada"></div>
+      </div>
+
+      <!-- MASONRY ABAJO (TOCABLE + LIGHTBOX) -->
       <div class="gallery">
         <img src="foto1.jpg" alt="Sebastián y Belén 1">
         <img src="foto2.jpg" alt="Sebastián y Belén 2">
@@ -633,7 +685,65 @@
       }
     });
 
-    // ===== LIGHTBOX (MOBILE) =====
+    // ===== STACK SLIDER (encimado, estable) =====
+    (function(){
+      const frame = document.getElementById("stackFrame");
+      const dotsWrap = document.getElementById("stackDots");
+      if(!frame || !dotsWrap) return;
+
+      const slides = Array.from(frame.querySelectorAll(".stack-img"));
+      if(slides.length <= 1) return;
+
+      let idx = 0;
+      let timer = null;
+      const intervalMs = 3500;
+
+      slides.forEach((_, i) => {
+        const d = document.createElement("button");
+        d.type = "button";
+        d.className = "stack-dot" + (i === 0 ? " active" : "");
+        d.setAttribute("aria-label", `Ir a foto ${i+1}`);
+        d.addEventListener("click", () => goTo(i, true));
+        dotsWrap.appendChild(d);
+      });
+
+      const dots = Array.from(dotsWrap.querySelectorAll(".stack-dot"));
+
+      function setActive(i){
+        slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
+        dots.forEach((d, k) => d.classList.toggle("active", k === i));
+      }
+
+      function goTo(i, user){
+        idx = (i + slides.length) % slides.length;
+        setActive(idx);
+        if(user) restart();
+      }
+
+      function next(){ goTo(idx + 1, false); }
+
+      function start(){
+        stop();
+        timer = setInterval(next, intervalMs);
+      }
+
+      function stop(){
+        if(timer) clearInterval(timer);
+        timer = null;
+      }
+
+      function restart(){
+        stop();
+        start();
+      }
+
+      frame.addEventListener("touchstart", stop, {passive:true});
+      frame.addEventListener("touchend", start, {passive:true});
+
+      start();
+    })();
+
+    // ===== LIGHTBOX (GALERIA) =====
     (function(){
       const gallery = document.querySelector(".gallery");
       if(!gallery) return;
@@ -671,7 +781,11 @@
       function next(){ openAt(idx + 1); }
 
       imgs.forEach((img, i) => img.addEventListener("click", () => openAt(i)));
-      overlay.addEventListener("click", (e) => { if(e.target === overlay) close(); });
+
+      overlay.addEventListener("click", (e) => {
+        if(e.target === overlay) close();
+      });
+
       btnClose.addEventListener("click", close);
       btnPrev.addEventListener("click", prev);
       btnNext.addEventListener("click", next);
@@ -689,7 +803,7 @@
         }
       }, {passive:true});
 
-      // Teclado (por si lo abren en compu)
+      // teclado
       document.addEventListener("keydown", (e) => {
         if(!overlay.classList.contains("open")) return;
         if(e.key === "Escape") close();
