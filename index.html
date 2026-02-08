@@ -7,6 +7,24 @@
   <meta name="description" content="Invitación digital: Sebastián & Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
 
   <style>
+    #contenedorMusica{
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 999999 !important;
+}
+
+#btnMusica{
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: none;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+}
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
     :root{
@@ -499,7 +517,32 @@
     }
   });
 </script>
+  <script>
+  const audio = document.getElementById("musica");
+  const btn = document.getElementById("btnMusica");
+
+  let reproduciendo = false;
+
+  btn.addEventListener("click", () => {
+    if (!reproduciendo) {
+      audio.play();
+      btn.innerHTML = "⏸ Pausar";
+      reproduciendo = true;
+    } else {
+      audio.pause();
+      btn.innerHTML = "▶ Música";
+      reproduciendo = false;
+    }
+  });
+</script>
 <body>
+  <div id="contenedorMusica">
+  <button id="btnMusica">▶ Música</button>
+</div>
+
+<audio id="musica" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
 <audio id="musica" loop>
   <source src="musica.mp3" type="audio/mpeg">
 </audio>
