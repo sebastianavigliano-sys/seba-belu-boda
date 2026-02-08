@@ -339,36 +339,48 @@
       letter-spacing: 1px;
     }
 
-    /* ===== BOTON MUSICA (ANDROID SAFE-AREA) ===== */
+    /* ===== BOTON MUSICA ORIGINAL (lo ocultamos para que no haya dos) ===== */
     #musicBtn{
-      position: fixed;
-      bottom: calc(18px + env(safe-area-inset-bottom));
-      right: calc(18px + env(safe-area-inset-right));
-      z-index: 999999; /* blindado */
-
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.20);
-      color: #fff;
-
-      padding: 12px 16px;
-      border-radius: 999px;
-
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-
-      backdrop-filter: blur(12px);
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      transition: .2s;
-
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display:none !important;
     }
 
-    #musicBtn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.35); }
-    #musicBtn.active{ background: var(--accent); color: #0f0f12; border-color: rgba(255,255,255,.08); }
+    /* ===== BOTON MUSICA GRANDE ARRIBA DE NOSOTROS ===== */
+    .music-block{
+      display: flex;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    #musicBtnInline{
+      width: 100%;
+      max-width: 480px;
+      padding: 18px 18px;
+      border-radius: 999px;
+
+      background: var(--accent);
+      color: #0f0f12;
+
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 800;
+
+      border: none;
+      cursor: pointer;
+
+      box-shadow: 0 18px 45px rgba(0,0,0,.55);
+      transition: .2s;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #musicBtnInline:hover{
+      transform: translateY(-2px);
+      background: var(--accent-dark);
+    }
 
     /* ===== LIGHTBOX ===== */
     #lightboxOverlay{
@@ -468,13 +480,13 @@
 
 <body>
 
-  <!-- MUSICA (solo 1) -->
+  <!-- MUSICA -->
   <audio id="bgMusic" loop>
     <source src="musica.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- BOTON MUSICA (solo 1) -->
+  <!-- BOTON MUSICA ORIGINAL (queda oculto pero existe para no romper JS) -->
   <button id="musicBtn" type="button">🎵 Música</button>
 
   <div class="container">
@@ -545,6 +557,12 @@
 
     <!-- NOSOTROS -->
     <section class="section alt">
+
+      <!-- BOTON GRANDE MUSICA -->
+      <div class="music-block">
+        <button id="musicBtnInline" type="button">🎵 Activar música para seguir</button>
+      </div>
+
       <h3>Nosotros</h3>
       <h4 id="historia">Un poquito de nuestra historia</h4>
       <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
@@ -661,6 +679,7 @@
     (function(){
       const music = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
+      const musicBtnInline = document.getElementById("musicBtnInline");
       const target = document.getElementById("historia");
       if(!music || !musicBtn) return;
 
@@ -671,11 +690,19 @@
       function setBtnPlayingUI(){
         musicBtn.classList.add("active");
         musicBtn.innerText = "⏸ Música";
+
+        if(musicBtnInline){
+          musicBtnInline.innerText = "⏸ Música";
+        }
       }
 
       function setBtnPausedUI(){
         musicBtn.classList.remove("active");
         musicBtn.innerText = "🎵 Música";
+
+        if(musicBtnInline){
+          musicBtnInline.innerText = "🎵 Activar música para seguir";
+        }
       }
 
       async function startMusic(){
@@ -695,6 +722,7 @@
         setBtnPausedUI();
       }
 
+      // Botón original (oculto)
       musicBtn.addEventListener("click", async () => {
         unlocked = true;
         if(!playing){
@@ -705,6 +733,14 @@
         }
       });
 
+      // Botón grande visible (usa la misma lógica probada)
+      if(musicBtnInline){
+        musicBtnInline.addEventListener("click", () => {
+          musicBtn.click();
+        });
+      }
+
+      // Unlock global
       function unlockOnce(){
         unlocked = true;
         document.removeEventListener("touchstart", unlockOnce);
@@ -713,6 +749,7 @@
       document.addEventListener("touchstart", unlockOnce, {passive:true});
       document.addEventListener("pointerdown", unlockOnce, {passive:true});
 
+      // Autoplay al llegar a historia (solo si ya hubo unlock)
       if(target){
         const io = new IntersectionObserver(async (entries) => {
           const e = entries[0];
@@ -728,6 +765,8 @@
 
         io.observe(target);
       }
+
+      setBtnPausedUI();
     })();
 
     // ===== STACK SLIDER (BLUR BACKGROUND) =====
