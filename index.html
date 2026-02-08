@@ -479,6 +479,17 @@
     .stack{
   margin-bottom: 0 !important;
 }
+    /* ===== FIX STACK EN CELU: sin cortes raros ===== */
+.stack-frame{
+  height: auto !important;
+  aspect-ratio: 4 / 5;  /* retrato pro para celular */
+}
+
+@media (min-width: 600px){
+  .stack-frame{
+    aspect-ratio: 16 / 9; /* más panorámico en pantallas más grandes */
+  }
+}
   </style>
 </head>
 
