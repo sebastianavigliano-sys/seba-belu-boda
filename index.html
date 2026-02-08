@@ -6,118 +6,97 @@
   <title>Nuestra Boda</title>
   <style>
     :root{
-      --bg:#fbfaf8;
-      --text:#1b1b1b;
-      --muted:#6b6b6b;
-      --card:#ffffff;
-      --line:rgba(0,0,0,.08);
-      --btn:#1b1b1b;
-      --btnText:#ffffff;
+      --bg:#0f0f12;
+      --card:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.12);
+      --text:#f5f5f7;
+      --muted:rgba(245,245,247,.72);
+      --accent:#d6b36a;
+      --btn:#f5f5f7;
+      --btnText:#0f0f12;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 800px at 20% 0%, #ffffff 0%, var(--bg) 55%, #f3f1ee 100%);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(214,179,106,.25), transparent 55%),
+        radial-gradient(900px 500px at 90% 30%, rgba(255,255,255,.08), transparent 60%),
+        var(--bg);
       color:var(--text);
     }
-    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 70px}
-    .hero{
-      padding:42px 20px 26px;
-      text-align:center;
-    }
-    .kicker{
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
-    }
-    h1{
-      margin:0;
-      font-size:44px;
-      line-height:1.1;
-      font-weight:650;
-    }
-    .sub{
-      margin:12px auto 0;
-      max-width:560px;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.5;
-    }
-    .date{
-      margin-top:18px;
-      font-size:16px;
-      font-weight:600;
-    }
-    .grid{
+    .wrap{max-width:980px;margin:0 auto;padding:30px 18px 74px}
+    header{padding:48px 18px 14px;text-align:center}
+    .kicker{letter-spacing:.28em;text-transform:uppercase;color:var(--muted);font-size:12px}
+    h1{margin:10px 0 6px;font-size:46px;line-height:1.05;font-weight:700}
+    .names{color:var(--accent);font-weight:700;letter-spacing:.06em}
+    .sub{margin:10px auto 0;max-width:600px;color:var(--muted);line-height:1.6}
+    .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:12px}
+    .count{
+      margin:18px auto 0;
       display:grid;
-      grid-template-columns:repeat(12,1fr);
-      gap:14px;
-      margin-top:18px;
+      grid-template-columns:repeat(4,1fr);
+      max-width:520px;
+      gap:10px;
     }
+    .box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px 10px;
+      text-align:center;
+      box-shadow:0 16px 40px rgba(0,0,0,.25);
+    }
+    .num{font-size:26px;font-weight:800}
+    .lbl{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:16px}
     .card{
       grid-column:span 12;
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px 18px;
-      box-shadow:0 12px 30px rgba(0,0,0,.05);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 16px 50px rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
     }
-    @media (min-width:820px){
-      .card.half{grid-column:span 6}
-      .card.third{grid-column:span 4}
+    @media (min-width:860px){
+      .half{grid-column:span 6}
+      .third{grid-column:span 4}
     }
-    .card h2{
-      margin:0 0 8px;
-      font-size:18px;
-      letter-spacing:.02em;
-    }
-    .muted{color:var(--muted);line-height:1.55;font-size:15px;margin:0}
+    .card h2{margin:0 0 8px;font-size:18px}
+    .muted{margin:0;color:var(--muted);line-height:1.55}
     .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     a.btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 14px;
-      border-radius:14px;
-      background:var(--btn);
-      color:var(--btnText);
-      text-decoration:none;
-      font-weight:650;
-      border:1px solid rgba(0,0,0,.15);
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 14px;border-radius:16px;
+      text-decoration:none;font-weight:800;
+      border:1px solid rgba(255,255,255,.18);
     }
-    a.btn.secondary{
-      background:#ffffff;
-      color:var(--text);
-    }
-    .pill{
-      display:inline-block;
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      font-size:12px;
-      margin-top:10px;
-    }
-    footer{
-      text-align:center;
-      color:var(--muted);
-      margin-top:22px;
-      font-size:12px;
-    }
+    a.btn.primary{background:var(--btn);color:var(--btnText)}
+    a.btn.secondary{background:transparent;color:var(--text)}
+    footer{text-align:center;color:var(--muted);margin-top:22px;font-size:12px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="hero">
+    <header>
       <div class="kicker">Invitación</div>
-      <h1>Nos casamos</h1>
-      <p class="sub">Con mucha alegría queremos invitarte a compartir este día con nosotros.</p>
-      <div class="date">📅 <span id="fecha">Sábado 00 de Mes</span> · 🕒 <span id="hora">00:00</span></div>
-      <div class="pill">Dress code: Glam</div>
+      <h1><span class="names" id="nombres">Nombre & Nombre</span></h1>
+      <p class="sub" id="texto">Con mucha alegría queremos invitarte a compartir este día con nosotros.</p>
+
+      <div class="chips">
+        <div class="chip">📅 <span id="fecha">Sábado 00 de Mes</span></div>
+        <div class="chip">🕒 <span id="hora">00:00</span></div>
+        <div class="chip">✨ Dress code: Glam</div>
+      </div>
+
+      <div class="count" aria-label="Cuenta regresiva">
+        <div class="box"><div class="num" id="d">0</div><div class="lbl">Días</div></div>
+        <div class="box"><div class="num" id="h">0</div><div class="lbl">Horas</div></div>
+        <div class="box"><div class="num" id="m">0</div><div class="lbl">Min</div></div>
+        <div class="box"><div class="num" id="s">0</div><div class="lbl">Seg</div></div>
+      </div>
     </header>
 
     <section class="grid">
@@ -125,7 +104,7 @@
         <h2>📍 Ceremonia & Fiesta</h2>
         <p class="muted"><strong id="lugar">Salón / Quinta</strong><br><span id="direccion">Dirección completa</span></p>
         <div class="row">
-          <a class="btn" id="btnMaps" href="#" target="_blank" rel="noopener">Abrir en Maps</a>
+          <a class="btn primary" id="btnMaps" href="#" target="_blank" rel="noopener">Abrir en Maps</a>
           <a class="btn secondary" id="btnAddCal" href="#" target="_blank" rel="noopener">Agregar al calendario</a>
         </div>
       </article>
@@ -134,42 +113,41 @@
         <h2>✅ Confirmación</h2>
         <p class="muted">Por favor confirmá tu asistencia. Nos ayuda un montón para organizar.</p>
         <div class="row">
-          <a class="btn" id="btnWhats" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+          <a class="btn primary" id="btnWhats" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
           <a class="btn secondary" id="btnForm" href="#" target="_blank" rel="noopener">Formulario</a>
         </div>
       </article>
 
       <article class="card third">
         <h2>🎁 Regalo</h2>
-        <p class="muted">Tu presencia es lo más importante. Si querés ayudarnos, dejamos los datos acá.</p>
-        <div class="row">
-          <a class="btn secondary" id="btnRegalo" href="#" target="_blank" rel="noopener">Ver datos</a>
-        </div>
+        <p class="muted">Tu presencia es lo más importante.</p>
+        <div class="row"><a class="btn secondary" id="btnRegalo" href="#" target="_blank" rel="noopener">Ver datos</a></div>
       </article>
 
       <article class="card third">
-        <h2>🗓️ Agenda</h2>
-        <p class="muted">Recepción, cena, brindis y fiesta. ¡A bailar!</p>
-        <div class="pill">Llegar 15 min antes</div>
+        <h2>🗓️ Info útil</h2>
+        <p class="muted" id="info">Llegar 15 min antes · Estacionamiento disponible · ¡A bailar!</p>
       </article>
 
       <article class="card third">
-        <h2>📸 Fotos</h2>
-        <p class="muted">Subí tus fotos y videos del evento en nuestro álbum.</p>
-        <div class="row">
-          <a class="btn secondary" id="btnAlbum" href="#" target="_blank" rel="noopener">Abrir álbum</a>
-        </div>
+        <h2>📸 Álbum</h2>
+        <p class="muted">Subí tus fotos y videos del evento.</p>
+        <div class="row"><a class="btn secondary" id="btnAlbum" href="#" target="_blank" rel="noopener">Abrir álbum</a></div>
       </article>
     </section>
 
-    <footer>Hecho con ♥ · Glam V1</footer>
+    <footer>Glam V2</footer>
   </div>
 
   <script>
     // ====== EDITÁ ESTOS DATOS ======
     const DATA = {
+      nombres: "Nombre & Nombre",
+      texto: "Con mucha alegría queremos invitarte a compartir este día con nosotros.",
       fechaTexto: "Sábado 00 de Mes de 2026",
       horaTexto: "20:30",
+      // Formato para countdown: "YYYY-MM-DDTHH:MM:SS-03:00" (Argentina)
+      fechaISO: "2026-00-00T20:30:00-03:00",
       lugar: "Salón / Quinta",
       direccion: "Dirección completa, Ciudad",
       mapsUrl: "https://maps.google.com/",
@@ -177,23 +155,43 @@
       formUrl: "https://forms.gle/",
       regaloUrl: "#",
       albumUrl: "#",
-      calendarUrl: "#"
+      calendarUrl: "#",
+      info: "Llegar 15 min antes · Estacionamiento disponible · ¡A bailar!"
     };
 
-    // ====== NO TOCAR ======
+    // ====== RENDER ======
+    document.getElementById("nombres").textContent = DATA.nombres;
+    document.getElementById("texto").textContent = DATA.texto;
     document.getElementById("fecha").textContent = DATA.fechaTexto;
     document.getElementById("hora").textContent = DATA.horaTexto;
     document.getElementById("lugar").textContent = DATA.lugar;
     document.getElementById("direccion").textContent = DATA.direccion;
+    document.getElementById("info").textContent = DATA.info;
     document.getElementById("btnMaps").href = DATA.mapsUrl;
     document.getElementById("btnWhats").href = DATA.whatsappUrl;
     document.getElementById("btnForm").href = DATA.formUrl;
     document.getElementById("btnRegalo").href = DATA.regaloUrl;
     document.getElementById("btnAlbum").href = DATA.albumUrl;
     document.getElementById("btnAddCal").href = DATA.calendarUrl;
-  </script>
-</body>
-</html>
 
+    // ====== COUNTDOWN ======
+    const target = new Date(DATA.fechaISO).getTime();
+    function tick(){
+      const now = Date.now();
+      let diff = Math.max(0, target - now);
+
+      const d = Math.floor(diff / (1000*60*60*24)); diff -= d*(1000*60*60*24);
+      const h = Math.floor(diff / (1000*60*60)); diff -= h*(1000*60*60);
+      const m = Math.floor(diff / (1000*60)); diff -= m*(1000*60);
+      const s = Math.floor(diff / 1000);
+
+      document.getElementById("d").textContent = d;
+      document.getElementById("h").textContent = h;
+      document.getElementById("m").textContent = m;
+      document.getElementById("s").textContent = s;
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </html>
