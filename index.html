@@ -236,19 +236,20 @@
     }
 
     /* =========================================================
-       STACK SLIDER (ESTABLE, PRO, MOBILE-FIRST)
-       Opción 3: vertical en celu / horizontal en pantallas grandes
+       STACK SLIDER (BLUR BACKGROUND PRO)
+       - Foto principal: contain (NO corta)
+       - Fondo: blur de la misma foto
        ========================================================= */
     .stack{
       margin-top: 22px;
-      margin-bottom: 0; /* como ocultamos miniaturas, que no deje hueco */
+      margin-bottom: 0;
     }
 
     .stack-frame{
       position: relative;
       width: 100%;
-      height: auto;               /* clave para ratio */
-      aspect-ratio: 4 / 5;        /* retrato en celu */
+      height: auto;
+      aspect-ratio: 4 / 5;        /* vertical en celu */
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,.10);
@@ -258,8 +259,31 @@
 
     @media(min-width: 600px){
       .stack-frame{
-        aspect-ratio: 16 / 9;     /* panorámico en pantallas más grandes */
+        aspect-ratio: 16 / 9;     /* horizontal en pantallas grandes */
       }
+    }
+
+    /* fondo blur */
+    .stack-frame::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image: var(--stack-bg);
+      background-size: cover;
+      background-position: center;
+      filter: blur(22px);
+      transform: scale(1.25);
+      opacity: .55;
+      z-index: 0;
+    }
+
+    /* capa oscura para que quede glam */
+    .stack-frame::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.25);
+      z-index: 0;
     }
 
     .stack-img{
@@ -267,11 +291,13 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain; /* clave: NO recorta */
+      padding: 10px;       /* margen interno */
       opacity: 0;
-      transform: scale(1.08);
+      transform: scale(1.04);
       transition: opacity 650ms ease, transform 1400ms ease;
       will-change: opacity, transform;
+      z-index: 1;
     }
 
     .stack-img.is-active{
@@ -586,7 +612,7 @@
 
   </div>
 
-  <!-- LIGHTBOX (queda, aunque miniaturas estén ocultas) -->
+  <!-- LIGHTBOX (queda aunque miniaturas estén ocultas) -->
   <div id="lightboxOverlay" aria-hidden="true">
     <button id="lbClose" class="lb-btn" type="button">✕</button>
     <button id="lbPrev" class="lb-nav" type="button" aria-label="Anterior">‹</button>
@@ -654,7 +680,7 @@
       }
     });
 
-    // ===== STACK SLIDER (encimado, estable) =====
+    // ===== STACK SLIDER (BLUR BACKGROUND) =====
     (function(){
       const frame = document.getElementById("stackFrame");
       const dotsWrap = document.getElementById("stackDots");
@@ -666,7 +692,7 @@
       let idx = 0;
       let timer = null;
 
-      // cadencia (ya la estabas ajustando, dejala a tu gusto)
+      // cadencia (ajustala si querés)
       const intervalMs = 2200;
 
       slides.forEach((_, i) => {
@@ -683,6 +709,10 @@
       function setActive(i){
         slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
         dots.forEach((d, k) => d.classList.toggle("active", k === i));
+
+        // actualizar blur background con la foto actual
+        const src = slides[i].getAttribute("src");
+        frame.style.setProperty("--stack-bg", `url('${src}')`);
       }
 
       function goTo(i, user){
@@ -711,6 +741,8 @@
       frame.addEventListener("touchstart", stop, {passive:true});
       frame.addEventListener("touchend", start, {passive:true});
 
+      // inicializar blur con la primera foto
+      setActive(0);
       start();
     })();
 
