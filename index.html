@@ -145,7 +145,7 @@
       background: var(--paper);
       border-radius: var(--radius);
       padding: 40px 26px;
-      margin:: 18px auto;
+      margin: 18px auto;
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,.06);
     }
@@ -237,21 +237,44 @@
       background: var(--accent-dark);
     }
 
-    /* ===== GALERIA ===== */
+    /* =========================================================
+       GALERIA MASONRY (MOBILE-FIRST) - NO ROMPE NADA
+       - Usa CSS Columns (lo más estable en celular)
+       - Las imágenes quedan con altura natural (masonry real)
+       ========================================================= */
     .gallery{
       margin-top: 26px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      column-count: 2;         /* celu default */
+      column-gap: 12px;
     }
 
     .gallery img{
-      width:100%;
-      height: 220px;
-      object-fit: cover;
+      width: 100%;
+      height: auto;            /* clave para masonry */
+      display: block;
+      margin: 0 0 12px;
       border-radius: 14px;
-      box-shadow: 0 14px 26px rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 14px 26px rgba(0,0,0,.35);
+
+      cursor: zoom-in;
+      transition: transform .22s ease, filter .22s ease;
+      break-inside: avoid;     /* ayuda */
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .gallery img:active{
+      transform: scale(0.99);
+      filter: brightness(1.05);
+    }
+
+    @media(max-width: 380px){
+      .gallery{ column-count: 1; }
+    }
+
+    @media(min-width: 900px){
+      .gallery{ column-count: 3; }
     }
 
     /* ===== RSVP ===== */
@@ -282,7 +305,7 @@
 
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.20);
-      color: var(--text);
+      color: #fff;
 
       padding: 12px 16px;
       border-radius: 999px;
@@ -309,18 +332,99 @@
       border-color: rgba(255,255,255,.08);
     }
 
-    /* ===== RESPONSIVE ===== */
+    /* ===== LIGHTBOX (PRO + MOBILE) ===== */
+    #lightboxOverlay{
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(0,0,0,.82);
+      backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+    }
+    #lightboxOverlay.open{ display:flex; }
+
+    #lightboxFigure{
+      width: 100%;
+      max-width: 980px;
+      max-height: 90vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 10px;
+    }
+
+    #lightboxImg{
+      width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+      background: rgba(255,255,255,.04);
+    }
+
+    #lightboxCaption{
+      color: rgba(255,255,255,.75);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .lb-btn{
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 10001;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      transition: .2s;
+    }
+    .lb-btn:hover{ transform: translateY(-2px); }
+
+    .lb-nav{
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10001;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      user-select: none;
+    }
+    #lbPrev{ left: 10px; }
+    #lbNext{ right: 10px; }
+    @media(max-width: 520px){
+      .lb-nav{ top: 56%; }
+    }
+
+    /* ===== RESPONSIVE BASE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
       .hero-content h1{ font-size: 44px; }
       .hero-content h2{ font-size: 20px; }
       .grid-2{ grid-template-columns: 1fr; }
-      .gallery{ grid-template-columns: repeat(2, 1fr); }
     }
 
     @media(max-width: 480px){
       .hero img{ height: 520px; }
-      .gallery{ grid-template-columns: 1fr; }
       .countdown div{ min-width: 75px; }
     }
   </style>
@@ -453,6 +557,18 @@
 
   </div>
 
+  <!-- LIGHTBOX (GALERIA PRO) -->
+  <div id="lightboxOverlay" aria-hidden="true">
+    <button id="lbClose" class="lb-btn" type="button">✕</button>
+    <button id="lbPrev" class="lb-nav" type="button" aria-label="Anterior">‹</button>
+    <button id="lbNext" class="lb-nav" type="button" aria-label="Siguiente">›</button>
+
+    <figure id="lightboxFigure">
+      <img id="lightboxImg" alt="Foto ampliada">
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+  </div>
+
   <script>
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
     // 20/03/2026 20:00 AR = 23:00 UTC
@@ -509,6 +625,75 @@
         musicBtn.innerText = "🎵 Música";
       }
     });
+
+    // ===== GALERIA LIGHTBOX (MOBILE) =====
+    (function(){
+      const gallery = document.querySelector(".gallery");
+      if(!gallery) return;
+
+      const imgs = Array.from(gallery.querySelectorAll("img"));
+      if(imgs.length === 0) return;
+
+      const overlay = document.getElementById("lightboxOverlay");
+      const lbImg = document.getElementById("lightboxImg");
+      const caption = document.getElementById("lightboxCaption");
+      const btnClose = document.getElementById("lbClose");
+      const btnPrev = document.getElementById("lbPrev");
+      const btnNext = document.getElementById("lbNext");
+
+      let idx = 0;
+
+      function openAt(i){
+        idx = (i + imgs.length) % imgs.length;
+        const el = imgs[idx];
+        lbImg.src = el.getAttribute("data-full") || el.src;
+        caption.textContent = el.alt ? el.alt : `Foto ${idx+1} de ${imgs.length}`;
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function close(){
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+        lbImg.src = "";
+      }
+
+      function prev(){ openAt(idx - 1); }
+      function next(){ openAt(idx + 1); }
+
+      imgs.forEach((img, i) => img.addEventListener("click", () => openAt(i)));
+
+      overlay.addEventListener("click", (e) => {
+        if(e.target === overlay) close();
+      });
+
+      btnClose.addEventListener("click", close);
+      btnPrev.addEventListener("click", prev);
+      btnNext.addEventListener("click", next);
+
+      // Swipe (mobile)
+      let x0 = null;
+      lbImg.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
+      lbImg.addEventListener("touchend", (e) => {
+        if(x0 === null) return;
+        const x1 = e.changedTouches[0].clientX;
+        const dx = x1 - x0;
+        x0 = null;
+        if(Math.abs(dx) > 40){
+          if(dx > 0) prev(); else next();
+        }
+      }, {passive:true});
+
+      // teclado (por si lo abren en compu)
+      document.addEventListener("keydown", (e) => {
+        if(!overlay.classList.contains("open")) return;
+        if(e.key === "Escape") close();
+        if(e.key === "ArrowLeft") prev();
+        if(e.key === "ArrowRight") next();
+      });
+    })();
   </script>
 
 </body>
