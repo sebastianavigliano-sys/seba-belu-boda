@@ -145,7 +145,7 @@
       background: var(--paper);
       border-radius: var(--radius);
       padding: 40px 26px;
-      margin: 18px auto;
+      margin:: 18px auto;
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,.06);
     }
@@ -273,6 +273,42 @@
       letter-spacing: 1px;
     }
 
+    /* ===== BOTON MUSICA ===== */
+    #musicBtn{
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 9999;
+
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.20);
+      color: var(--text);
+
+      padding: 12px 16px;
+      border-radius: 999px;
+
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+
+      transition: .2s;
+    }
+
+    #musicBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.35);
+    }
+
+    #musicBtn.active{
+      background: var(--accent);
+      color: #0f0f12;
+      border-color: rgba(255,255,255,.08);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
@@ -291,6 +327,16 @@
 </head>
 
 <body>
+
+  <!-- MUSICA -->
+  <audio id="bgMusic" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <!-- BOTON MUSICA -->
+  <button id="musicBtn" type="button">🎵 Música</button>
+
   <div class="container">
 
     <!-- HERO -->
@@ -443,6 +489,27 @@
     const phone = "5491153265596";
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
+
+    // ===== MUSICA ON/OFF =====
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+
+    let playing = false;
+
+    musicBtn.addEventListener("click", () => {
+      if(!playing){
+        music.play();
+        playing = true;
+        musicBtn.classList.add("active");
+        musicBtn.innerText = "⏸ Música";
+      }else{
+        music.pause();
+        playing = false;
+        musicBtn.classList.remove("active");
+        musicBtn.innerText = "🎵 Música";
+      }
+    });
   </script>
+
 </body>
 </html>
