@@ -237,16 +237,18 @@
 
     /* =========================================================
        STACK SLIDER (ESTABLE, PRO, MOBILE-FIRST)
+       Opción 3: vertical en celu / horizontal en pantallas grandes
        ========================================================= */
     .stack{
       margin-top: 22px;
-      margin-bottom: 18px;
+      margin-bottom: 0; /* como ocultamos miniaturas, que no deje hueco */
     }
 
     .stack-frame{
       position: relative;
       width: 100%;
-      height: 380px;
+      height: auto;               /* clave para ratio */
+      aspect-ratio: 4 / 5;        /* retrato en celu */
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,.10);
@@ -254,8 +256,10 @@
       background: rgba(255,255,255,.03);
     }
 
-    @media(max-width: 480px){
-      .stack-frame{ height: 340px; }
+    @media(min-width: 600px){
+      .stack-frame{
+        aspect-ratio: 16 / 9;     /* panorámico en pantallas más grandes */
+      }
     }
 
     .stack-img{
@@ -298,45 +302,10 @@
     }
 
     /* =========================================================
-       GALERIA MASONRY (ESTABLE, SIN ANIMACIONES RARAS)
+       MINIATURAS ABAJO (OCULTAS) - SIN ROMPER NADA
        ========================================================= */
     .gallery{
-      margin-top: 18px;
-      display: block;
-      column-count: 2;
-      column-gap: 12px;
-    }
-
-    @media(max-width: 320px){
-      .gallery{ column-count: 1; }
-    }
-
-    @media(min-width: 900px){
-      .gallery{ column-count: 3; }
-    }
-
-    .gallery img{
-      width: 100%;
-      height: auto;
-      display:block;
-      margin: 0 0 12px;
-
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: 0 14px 26px rgba(0,0,0,.35);
-
-      cursor: zoom-in;
-
-      break-inside: avoid;
-      -webkit-column-break-inside: avoid;
-      page-break-inside: avoid;
-
-      transition: transform .18s ease, filter .18s ease;
-    }
-
-    .gallery img:active{
-      transform: scale(0.99);
-      filter: brightness(1.08);
+      display: none !important;
     }
 
     /* ===== RSVP ===== */
@@ -472,24 +441,6 @@
       .hero img{ height: 520px; }
       .countdown div{ min-width: 75px; }
     }
-    /* Ocultar miniaturas sin romper nada */
-.gallery{
-  display: none !important;
-}
-    .stack{
-  margin-bottom: 0 !important;
-}
-    /* ===== FIX STACK EN CELU: sin cortes raros ===== */
-.stack-frame{
-  height: auto !important;
-  aspect-ratio: 4 / 5;  /* retrato pro para celular */
-}
-
-@media (min-width: 600px){
-  .stack-frame{
-    aspect-ratio: 16 / 9; /* más panorámico en pantallas más grandes */
-  }
-}
   </style>
 </head>
 
@@ -576,7 +527,7 @@
       <h4>Un poquito de nuestra historia</h4>
       <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
 
-      <!-- STACK SLIDER (CUADRO PRO QUE CAMBIA SOLO) -->
+      <!-- STACK SLIDER -->
       <div class="stack">
         <div class="stack-frame" id="stackFrame">
           <img class="stack-img is-active" src="foto1.jpg" alt="Sebastián y Belén 1">
@@ -585,14 +536,13 @@
           <img class="stack-img" src="foto4.jpg" alt="Sebastián y Belén 4">
           <img class="stack-img" src="foto5.jpg" alt="Sebastián y Belén 5">
           <img class="stack-img" src="foto6.jpg" alt="Sebastián y Belén 6">
-          <img class="stack-img" src="foto7.jpg" alt="Sebastián y Belén 7">
         </div>
 
         <div class="stack-dots" id="stackDots" aria-label="Galería destacada"></div>
       </div>
 
-      <!-- MASONRY ABAJO (TOCABLE + LIGHTBOX) -->
-      <div class="gallery">
+      <!-- MINIATURAS (OCULTAS POR CSS) -->
+      <div class="gallery" aria-hidden="true">
         <img src="foto1.jpg" alt="Sebastián y Belén 1">
         <img src="foto2.jpg" alt="Sebastián y Belén 2">
         <img src="foto3.jpg" alt="Sebastián y Belén 3">
@@ -636,7 +586,7 @@
 
   </div>
 
-  <!-- LIGHTBOX -->
+  <!-- LIGHTBOX (queda, aunque miniaturas estén ocultas) -->
   <div id="lightboxOverlay" aria-hidden="true">
     <button id="lbClose" class="lb-btn" type="button">✕</button>
     <button id="lbPrev" class="lb-nav" type="button" aria-label="Anterior">‹</button>
@@ -715,7 +665,9 @@
 
       let idx = 0;
       let timer = null;
-      const intervalMs = 1900;
+
+      // cadencia (ya la estabas ajustando, dejala a tu gusto)
+      const intervalMs = 2200;
 
       slides.forEach((_, i) => {
         const d = document.createElement("button");
@@ -762,7 +714,7 @@
       start();
     })();
 
-    // ===== LIGHTBOX (GALERIA) =====
+    // ===== LIGHTBOX (queda por si reactivás miniaturas) =====
     (function(){
       const gallery = document.querySelector(".gallery");
       if(!gallery) return;
