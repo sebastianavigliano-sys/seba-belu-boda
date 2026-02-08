@@ -550,7 +550,7 @@
     <!-- NOSOTROS -->
     <section class="section alt">
       <h3>Nosotros</h3>
-      <h4>Un poquito de nuestra historia</h4>
+      <h4 id="historia">Un poquito de nuestra historia</h4>
       <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
 
       <!-- STACK SLIDER -->
@@ -744,6 +744,43 @@
       // inicializar blur con la primera foto
       setActive(0);
       start();
+    })();
+
+    // ===== AUTO-MUSICA AL LLEGAR A "HISTORIA" (con fallback) =====
+    (function(){
+      const music = document.getElementById("bgMusic");
+      const musicBtn = document.getElementById("musicBtn");
+      const target = document.getElementById("historia");
+      if(!music || !musicBtn || !target) return;
+
+      let tried = false;
+
+      function setBtnPlayingUI(){
+        musicBtn.classList.add("active");
+        musicBtn.innerText = "⏸ Música";
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        const e = entries[0];
+        if(!e.isIntersecting) return;
+        if(tried) return;
+        tried = true;
+
+        const p = music.play();
+        if(p && typeof p.then === "function"){
+          p.then(() => {
+            setBtnPlayingUI();
+          }).catch(() => {
+            // si Android bloquea autoplay, queda el botón para tocar
+          });
+        } else {
+          setBtnPlayingUI();
+        }
+
+        io.disconnect();
+      }, { threshold: 0.6 });
+
+      io.observe(target);
     })();
 
     // ===== LIGHTBOX (queda por si reactivás miniaturas) =====
