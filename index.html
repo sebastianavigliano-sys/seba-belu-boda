@@ -283,6 +283,89 @@
       .gallery{ grid-template-columns: 1fr; }
       .countdown div{ min-width: 75px; }
     }
+   /* =========================
+   THEME SWITCHER (3 estilos)
+   ========================= */
+body.theme-romantic{
+  --bg:#f6f2ec; --paper:#ffffff; --paper2:#fbf8f3;
+  --text:#1f1f1f; --muted:#6b6b6b;
+  --sage:#9aa38f; --sage-dark:#6f7a66;
+  --accent:#c9b59b; --accent-dark:#a89174;
+  --shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+body.theme-minimal{
+  --bg:#ffffff; --paper:#ffffff; --paper2:#f6f6f6;
+  --text:#111111; --muted:#444444;
+  --sage:#b7b7b7; --sage-dark:#7a7a7a;
+  --accent:#111111; --accent-dark:#000000;
+  --shadow:0 10px 24px rgba(0,0,0,.06);
+}
+
+body.theme-glam{
+  --bg:#0f0f12; --paper:#15151a; --paper2:#121218;
+  --text:#f4f0ea; --muted:#bcb6ad;
+  --sage:#9a8f7e; --sage-dark:#cbbba4;
+  --accent:#c9b59b; --accent-dark:#a89174;
+  --shadow:0 18px 50px rgba(0,0,0,.45);
+}
+
+/* barra de botones arriba */
+.theme-bar{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: 10px 0;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+}
+
+.theme-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.theme-title{
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+}
+
+.theme-buttons{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tbtn{
+  cursor:pointer;
+  border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: .15s;
+}
+
+.tbtn:hover{ transform: translateY(-1px); }
+
+.tbtn.active{
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  color: white;
+}
+
+/* en modo glam, ajustar cards y textos un poquito */
+body.theme-glam .card{ background: #1b1b22; }
+body.theme-glam .section{ border-color: rgba(255,255,255,.06); }
+body.theme-glam .card{ border-color: rgba(255,255,255,.08); } 
   </style>
 </head>
 
