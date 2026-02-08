@@ -235,6 +235,69 @@
       background: var(--accent-dark);
     }
 
+    /* ===== MUSICA (botón original oculto) ===== */
+    #musicBtn{ display:none !important; }
+
+    /* ===== BOTON MUSICA GRANDE (gate) ===== */
+    .music-block{
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    #musicBtnInline{
+      width: 100%;
+      max-width: 520px;
+      padding: 18px 18px;
+      border-radius: 999px;
+
+      background: var(--accent);
+      color: #0f0f12;
+
+      font-size: 14px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      font-weight: 900;
+
+      border: none;
+      cursor: pointer;
+
+      box-shadow: 0 18px 45px rgba(0,0,0,.55);
+      transition: .2s;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    #musicBtnInline:hover{
+      transform: translateY(-2px);
+      background: var(--accent-dark);
+    }
+
+    /* ===== Gate visual ===== */
+    .music-gate{
+      margin: 6px auto 18px;
+      max-width: 680px;
+      text-align: center;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.85);
+      letter-spacing: 1px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Bloquea la historia hasta activar música */
+    .stack.is-locked{
+      position: relative;
+      pointer-events: none; /* bloquea swipe/click */
+      opacity: .55;
+    }
+
     /* =========================================================
        STACK SLIDER (BLUR BACKGROUND PRO)
        ========================================================= */
@@ -324,9 +387,7 @@
     }
 
     /* Miniaturas ocultas */
-    .gallery{
-      display: none !important;
-    }
+    .gallery{ display: none !important; }
 
     .rsvp-box{ margin-top: 20px; text-align:center; }
     .rsvp-box p{ margin-bottom: 18px; }
@@ -337,49 +398,6 @@
       color: var(--sage-dark);
       font-size: 13px;
       letter-spacing: 1px;
-    }
-
-    /* ===== BOTON MUSICA ORIGINAL (lo ocultamos para que no haya dos) ===== */
-    #musicBtn{
-      display:none !important;
-    }
-
-    /* ===== BOTON MUSICA GRANDE ARRIBA DE NOSOTROS ===== */
-    .music-block{
-      display: flex;
-      justify-content: center;
-      margin-bottom: 22px;
-    }
-
-    #musicBtnInline{
-      width: 100%;
-      max-width: 480px;
-      padding: 18px 18px;
-      border-radius: 999px;
-
-      background: var(--accent);
-      color: #0f0f12;
-
-      font-size: 14px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 800;
-
-      border: none;
-      cursor: pointer;
-
-      box-shadow: 0 18px 45px rgba(0,0,0,.55);
-      transition: .2s;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    #musicBtnInline:hover{
-      transform: translateY(-2px);
-      background: var(--accent-dark);
     }
 
     /* ===== LIGHTBOX ===== */
@@ -486,7 +504,7 @@
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- BOTON MUSICA ORIGINAL (queda oculto pero existe para no romper JS) -->
+  <!-- BOTON MUSICA ORIGINAL (oculto, se usa como “lógica central”) -->
   <button id="musicBtn" type="button">🎵 Música</button>
 
   <div class="container">
@@ -558,17 +576,20 @@
     <!-- NOSOTROS -->
     <section class="section alt">
 
-      <!-- BOTON GRANDE MUSICA -->
       <div class="music-block">
-        <button id="musicBtnInline" type="button">🎵 Activar música para seguir</button>
+        <button id="musicBtnInline" type="button">🎵 Hacé click para ver nuestra historia</button>
       </div>
 
       <h3>Nosotros</h3>
       <h4 id="historia">Un poquito de nuestra historia</h4>
       <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
 
+      <div id="musicGate" class="music-gate">
+        Para ver nuestra historia, activá la música con el botón de arriba ✨
+      </div>
+
       <!-- STACK SLIDER -->
-      <div class="stack">
+      <div class="stack" id="stackRoot">
         <div class="stack-frame" id="stackFrame">
           <img class="stack-img is-active" src="foto1.jpg" alt="Sebastián y Belén 1">
           <img class="stack-img" src="foto2.jpg" alt="Sebastián y Belén 2">
@@ -639,6 +660,9 @@
   </div>
 
   <script>
+    // Estado global: historia bloqueada hasta activar música
+    window.__musicUnlockedForStory = false;
+
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
     // 20/03/2026 20:00 AR = 23:00 UTC
     const targetDate = new Date(Date.UTC(2026, 2, 20, 23, 0, 0));
@@ -675,40 +699,32 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== MUSICA ON/OFF + AUTO START EN HISTORIA (ANDROID SAFE) =====
+    // ===== MUSICA ON/OFF (Android safe) + DISPARA UNLOCK DE HISTORIA =====
     (function(){
       const music = document.getElementById("bgMusic");
-      const musicBtn = document.getElementById("musicBtn");
-      const musicBtnInline = document.getElementById("musicBtnInline");
-      const target = document.getElementById("historia");
+      const musicBtn = document.getElementById("musicBtn");       // oculto
+      const musicBtnInline = document.getElementById("musicBtnInline"); // visible
       if(!music || !musicBtn) return;
 
       let playing = false;
-      let unlocked = false;
-      let tried = false;
 
       function setBtnPlayingUI(){
-        musicBtn.classList.add("active");
-        musicBtn.innerText = "⏸ Música";
-
-        if(musicBtnInline){
-          musicBtnInline.innerText = "⏸ Música";
-        }
+        if(musicBtnInline) musicBtnInline.innerText = "⏸ Música activada";
       }
 
       function setBtnPausedUI(){
-        musicBtn.classList.remove("active");
-        musicBtn.innerText = "🎵 Música";
-
-        if(musicBtnInline){
-          musicBtnInline.innerText = "🎵 Activar música para seguir";
-        }
+        if(musicBtnInline) musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
       }
 
       async function startMusic(){
         try{
           await music.play();
           playing = true;
+
+          // ✅ desbloquea historia
+          window.__musicUnlockedForStory = true;
+          document.dispatchEvent(new Event("music:started"));
+
           setBtnPlayingUI();
           return true;
         }catch(e){
@@ -719,12 +735,12 @@
       function stopMusic(){
         music.pause();
         playing = false;
+        // OJO: aunque pauses, la historia queda desbloqueada (intencional)
         setBtnPausedUI();
       }
 
       // Botón original (oculto)
       musicBtn.addEventListener("click", async () => {
-        unlocked = true;
         if(!playing){
           const ok = await startMusic();
           if(!ok) stopMusic();
@@ -733,47 +749,21 @@
         }
       });
 
-      // Botón grande visible (usa la misma lógica probada)
+      // Botón visible (dispara la lógica probada)
       if(musicBtnInline){
-        musicBtnInline.addEventListener("click", () => {
-          musicBtn.click();
-        });
-      }
-
-      // Unlock global
-      function unlockOnce(){
-        unlocked = true;
-        document.removeEventListener("touchstart", unlockOnce);
-        document.removeEventListener("pointerdown", unlockOnce);
-      }
-      document.addEventListener("touchstart", unlockOnce, {passive:true});
-      document.addEventListener("pointerdown", unlockOnce, {passive:true});
-
-      // Autoplay al llegar a historia (solo si ya hubo unlock)
-      if(target){
-        const io = new IntersectionObserver(async (entries) => {
-          const e = entries[0];
-          if(!e.isIntersecting) return;
-          if(tried) return;
-          tried = true;
-
-          if(unlocked && !playing){
-            await startMusic();
-          }
-          io.disconnect();
-        }, { threshold: 0.6 });
-
-        io.observe(target);
+        musicBtnInline.addEventListener("click", () => musicBtn.click());
       }
 
       setBtnPausedUI();
     })();
 
-    // ===== STACK SLIDER (BLUR BACKGROUND) =====
+    // ===== STACK SLIDER (solo arranca cuando se activa música) =====
     (function(){
       const frame = document.getElementById("stackFrame");
       const dotsWrap = document.getElementById("stackDots");
-      if(!frame || !dotsWrap) return;
+      const stackRoot = document.getElementById("stackRoot");
+      const gate = document.getElementById("musicGate");
+      if(!frame || !dotsWrap || !stackRoot) return;
 
       const slides = Array.from(frame.querySelectorAll(".stack-img"));
       if(slides.length <= 1) return;
@@ -781,6 +771,15 @@
       let idx = 0;
       let timer = null;
       const intervalMs = 2200;
+
+      // Estado inicial: bloqueado
+      if(!window.__musicUnlockedForStory){
+        stackRoot.classList.add("is-locked");
+        if(gate) gate.style.display = "block";
+      }else{
+        stackRoot.classList.remove("is-locked");
+        if(gate) gate.style.display = "none";
+      }
 
       slides.forEach((_, i) => {
         const d = document.createElement("button");
@@ -827,7 +826,20 @@
       frame.addEventListener("touchend", start, {passive:true});
 
       setActive(0);
-      start();
+
+      function unlockStory(){
+        window.__musicUnlockedForStory = true;
+        stackRoot.classList.remove("is-locked");
+        if(gate) gate.style.display = "none";
+        start();
+        document.removeEventListener("music:started", unlockStory);
+      }
+
+      if(window.__musicUnlockedForStory){
+        start();
+      }else{
+        document.addEventListener("music:started", unlockStory);
+      }
     })();
 
     // ===== LIGHTBOX (por si reactivás miniaturas) =====
