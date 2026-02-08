@@ -479,7 +479,32 @@
 @media (prefers-reduced-motion: reduce){
   .gallery img{ animation: zMove 10s ease-in-out infinite alternate !important; }
 }
+/* ===== ANIMACION FORZADA REAL (NO DEPENDE DE NADA) ===== */
+.gallery img{
+  animation-name: zMove !important;
+  animation-duration: 10s !important;
+  animation-timing-function: ease-in-out !important;
+  animation-iteration-count: infinite !important;
+  animation-direction: alternate !important;
+  animation-fill-mode: both !important;
+}
 
+/* Variaciones para que no se muevan todas igual */
+.gallery img:nth-child(1){ animation-duration: 12s !important; animation-delay: 0s !important; }
+.gallery img:nth-child(2){ animation-duration: 9s !important;  animation-delay: 1s !important; }
+.gallery img:nth-child(3){ animation-duration: 13s !important; animation-delay: .4s !important; }
+.gallery img:nth-child(4){ animation-duration: 10s !important; animation-delay: 1.6s !important; }
+.gallery img:nth-child(5){ animation-duration: 14s !important; animation-delay: .8s !important; }
+.gallery img:nth-child(6){ animation-duration: 11s !important; animation-delay: 2s !important; }
+
+@keyframes zMove{
+  0%{
+    transform: scale(1) translate3d(0,0,0) !important;
+  }
+  100%{
+    transform: scale(1.12) translate3d(10px,-10px,0) !important;
+  }
+}
   </style>
 </head>
 
