@@ -235,46 +235,73 @@
       background: var(--accent-dark);
     }
 
-    /* ===== MUSICA (botón original oculto) ===== */
+    /* ===== MUSICA: botón original oculto ===== */
     #musicBtn{ display:none !important; }
 
-    /* ===== BOTON MUSICA GRANDE (gate) ===== */
+    /* ===== BOTON MUSICA GRANDE (arriba de Nosotros) ===== */
     .music-block{
       display: flex;
       justify-content: center;
       margin-bottom: 18px;
     }
 
+    /* Llamativo (dorado + pulso) */
     #musicBtnInline{
       width: 100%;
-      max-width: 520px;
+      max-width: 560px;
       padding: 18px 18px;
       border-radius: 999px;
 
-      background: var(--accent);
-      color: #0f0f12;
+      background: linear-gradient(135deg, #ffd36e, #c9b59b, #a89174);
+      color: #1a1410;
 
       font-size: 14px;
       letter-spacing: 1.6px;
       text-transform: uppercase;
       font-weight: 900;
 
-      border: none;
+      border: 1px solid rgba(255,255,255,.25);
       cursor: pointer;
 
-      box-shadow: 0 18px 45px rgba(0,0,0,.55);
-      transition: .2s;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,.55),
+        0 0 0 2px rgba(255,211,110,.18),
+        0 0 28px rgba(255,211,110,.18);
+
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
 
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       text-align: center;
+
+      animation: musicPulse 1.25s ease-in-out infinite;
+      will-change: transform;
     }
 
     #musicBtnInline:hover{
-      transform: translateY(-2px);
-      background: var(--accent-dark);
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.03);
+    }
+
+    /* Cuando está activada la música: se calma */
+    #musicBtnInline.is-on{
+      animation: none;
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      border-color: rgba(255,255,255,.16);
+      box-shadow: 0 14px 35px rgba(0,0,0,.45);
+    }
+
+    @keyframes musicPulse{
+      0%   { transform: translateY(0) scale(1); box-shadow: 0 18px 45px rgba(0,0,0,.55), 0 0 0 2px rgba(255,211,110,.16), 0 0 22px rgba(255,211,110,.12); }
+      50%  { transform: translateY(-6px) scale(1.02); box-shadow: 0 22px 55px rgba(0,0,0,.60), 0 0 0 2px rgba(255,211,110,.22), 0 0 34px rgba(255,211,110,.22); }
+      100% { transform: translateY(0) scale(1); box-shadow: 0 18px 45px rgba(0,0,0,.55), 0 0 0 2px rgba(255,211,110,.16), 0 0 22px rgba(255,211,110,.12); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #musicBtnInline{ animation: none; }
     }
 
     /* ===== Gate visual ===== */
@@ -291,10 +318,10 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Bloquea la historia hasta activar música */
+    /* Bloquea historia hasta activar música */
     .stack.is-locked{
       position: relative;
-      pointer-events: none; /* bloquea swipe/click */
+      pointer-events: none;
       opacity: .55;
     }
 
@@ -386,7 +413,6 @@
       border-color: rgba(255,255,255,.10);
     }
 
-    /* Miniaturas ocultas */
     .gallery{ display: none !important; }
 
     .rsvp-box{ margin-top: 20px; text-align:center; }
@@ -481,7 +507,6 @@
     #lbNext{ right: 10px; }
     @media(max-width: 520px){ .lb-nav{ top: 56%; } }
 
-    /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
       .hero-content h1{ font-size: 44px; }
@@ -504,7 +529,7 @@
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- BOTON MUSICA ORIGINAL (oculto, se usa como “lógica central”) -->
+  <!-- Botón original oculto (se usa como lógica central) -->
   <button id="musicBtn" type="button">🎵 Música</button>
 
   <div class="container">
@@ -588,7 +613,6 @@
         Para ver nuestra historia, activá la música con el botón de arriba ✨
       </div>
 
-      <!-- STACK SLIDER -->
       <div class="stack" id="stackRoot">
         <div class="stack-frame" id="stackFrame">
           <img class="stack-img is-active" src="foto1.jpg" alt="Sebastián y Belén 1">
@@ -602,7 +626,6 @@
         <div class="stack-dots" id="stackDots" aria-label="Galería destacada"></div>
       </div>
 
-      <!-- MINIATURAS (OCULTAS POR CSS) -->
       <div class="gallery" aria-hidden="true">
         <img src="foto1.jpg" alt="Sebastián y Belén 1">
         <img src="foto2.jpg" alt="Sebastián y Belén 2">
@@ -660,7 +683,7 @@
   </div>
 
   <script>
-    // Estado global: historia bloqueada hasta activar música
+    // Historia bloqueada hasta activar música
     window.__musicUnlockedForStory = false;
 
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
@@ -699,7 +722,7 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== MUSICA ON/OFF (Android safe) + DISPARA UNLOCK DE HISTORIA =====
+    // ===== MUSICA ON/OFF (Android safe) + Unlock historia =====
     (function(){
       const music = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");       // oculto
@@ -709,11 +732,17 @@
       let playing = false;
 
       function setBtnPlayingUI(){
-        if(musicBtnInline) musicBtnInline.innerText = "⏸ Música activada";
+        if(musicBtnInline){
+          musicBtnInline.innerText = "⏸ Música activada";
+          musicBtnInline.classList.add("is-on");   // se calma
+        }
       }
 
       function setBtnPausedUI(){
-        if(musicBtnInline) musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
+        if(musicBtnInline){
+          musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
+          musicBtnInline.classList.remove("is-on"); // vuelve a latir
+        }
       }
 
       async function startMusic(){
@@ -721,7 +750,7 @@
           await music.play();
           playing = true;
 
-          // ✅ desbloquea historia
+          // desbloquea historia (una vez)
           window.__musicUnlockedForStory = true;
           document.dispatchEvent(new Event("music:started"));
 
@@ -735,11 +764,10 @@
       function stopMusic(){
         music.pause();
         playing = false;
-        // OJO: aunque pauses, la historia queda desbloqueada (intencional)
+        // Nota: la historia queda desbloqueada aunque pausen (intencional)
         setBtnPausedUI();
       }
 
-      // Botón original (oculto)
       musicBtn.addEventListener("click", async () => {
         if(!playing){
           const ok = await startMusic();
@@ -749,7 +777,6 @@
         }
       });
 
-      // Botón visible (dispara la lógica probada)
       if(musicBtnInline){
         musicBtnInline.addEventListener("click", () => musicBtn.click());
       }
@@ -772,7 +799,7 @@
       let timer = null;
       const intervalMs = 2200;
 
-      // Estado inicial: bloqueado
+      // Bloqueado al inicio
       if(!window.__musicUnlockedForStory){
         stackRoot.classList.add("is-locked");
         if(gate) gate.style.display = "block";
