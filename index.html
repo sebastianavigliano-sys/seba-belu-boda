@@ -283,103 +283,106 @@
       .gallery{ grid-template-columns: 1fr; }
       .countdown div{ min-width: 75px; }
     }
-   /* =========================
-   THEME SWITCHER (3 estilos)
-   ========================= */
-body.theme-romantic{
-  --bg:#f6f2ec; --paper:#ffffff; --paper2:#fbf8f3;
-  --text:#1f1f1f; --muted:#6b6b6b;
-  --sage:#9aa38f; --sage-dark:#6f7a66;
-  --accent:#c9b59b; --accent-dark:#a89174;
-  --shadow:0 12px 35px rgba(0,0,0,.08);
-}
 
-body.theme-minimal{
-  --bg:#ffffff; --paper:#ffffff; --paper2:#f6f6f6;
-  --text:#111111; --muted:#444444;
-  --sage:#b7b7b7; --sage-dark:#7a7a7a;
-  --accent:#111111; --accent-dark:#000000;
-  --shadow:0 10px 24px rgba(0,0,0,.06);
-}
+    /* =========================
+       THEME SWITCHER (3 estilos)
+       ========================= */
+    body.theme-romantic{
+      --bg:#f6f2ec; --paper:#ffffff; --paper2:#fbf8f3;
+      --text:#1f1f1f; --muted:#6b6b6b;
+      --sage:#9aa38f; --sage-dark:#6f7a66;
+      --accent:#c9b59b; --accent-dark:#a89174;
+      --shadow:0 12px 35px rgba(0,0,0,.08);
+    }
 
-body.theme-glam{
-  --bg:#0f0f12; --paper:#15151a; --paper2:#121218;
-  --text:#f4f0ea; --muted:#bcb6ad;
-  --sage:#9a8f7e; --sage-dark:#cbbba4;
-  --accent:#c9b59b; --accent-dark:#a89174;
-  --shadow:0 18px 50px rgba(0,0,0,.45);
-}
+    body.theme-minimal{
+      --bg:#ffffff; --paper:#ffffff; --paper2:#f6f6f6;
+      --text:#111111; --muted:#444444;
+      --sage:#b7b7b7; --sage-dark:#7a7a7a;
+      --accent:#111111; --accent-dark:#000000;
+      --shadow:0 10px 24px rgba(0,0,0,.06);
+    }
 
-/* barra de botones arriba */
-.theme-bar{
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  padding: 10px 0;
-  backdrop-filter: blur(10px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
-}
+    body.theme-glam{
+      --bg:#0f0f12; --paper:#15151a; --paper2:#121218;
+      --text:#f4f0ea; --muted:#bcb6ad;
+      --sage:#9a8f7e; --sage-dark:#cbbba4;
+      --accent:#c9b59b; --accent-dark:#a89174;
+      --shadow:0 18px 50px rgba(0,0,0,.45);
+    }
 
-.theme-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-}
+    /* barra de botones arriba */
+    .theme-bar{
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      padding: 10px 0;
+      backdrop-filter: blur(10px);
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+    }
 
-.theme-title{
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--sage-dark);
-}
+    .theme-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
 
-.theme-buttons{
-  display:flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+    .theme-title{
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+    }
 
-.tbtn{
-  cursor:pointer;
-  border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
-  background: color-mix(in srgb, var(--paper) 90%, transparent);
-  color: var(--text);
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: .15s;
-}
+    .theme-buttons{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-.tbtn:hover{ transform: translateY(-1px); }
+    .tbtn{
+      cursor:pointer;
+      border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+      background: color-mix(in srgb, var(--paper) 90%, transparent);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: .15s;
+    }
 
-.tbtn.active{
-  background: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
-  color: white;
-}
+    .tbtn:hover{ transform: translateY(-1px); }
 
-/* en modo glam, ajustar cards y textos un poquito */
-body.theme-glam .card{ background: #1b1b22; }
-body.theme-glam .section{ border-color: rgba(255,255,255,.06); }
-body.theme-glam .card{ border-color: rgba(255,255,255,.08); } 
+    .tbtn.active{
+      background: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+      color: white;
+    }
+
+    /* en modo glam, ajustar cards y textos un poquito */
+    body.theme-glam .card{ background: #1b1b22; border-color: rgba(255,255,255,.08); }
+    body.theme-glam .section{ border-color: rgba(255,255,255,.06); }
+    body.theme-glam .card .info,
+    body.theme-glam .section p{ color: var(--muted); }
   </style>
 </head>
 
-<body>
-<div class="theme-bar">
-  <div class="container theme-inner">
-    <div class="theme-title">Estilo</div>
-    <div class="theme-buttons">
-      <button class="tbtn" data-theme="romantic">Romántico</button>
-      <button class="tbtn" data-theme="minimal">Minimal</button>
-      <button class="tbtn" data-theme="glam">Glam</button>
+<body class="theme-romantic">
+  <div class="theme-bar">
+    <div class="container theme-inner">
+      <div class="theme-title">Estilo</div>
+      <div class="theme-buttons">
+        <button class="tbtn" data-theme="romantic" type="button">Romántico</button>
+        <button class="tbtn" data-theme="minimal" type="button">Minimal</button>
+        <button class="tbtn" data-theme="glam" type="button">Glam</button>
+      </div>
     </div>
   </div>
-</div>
+
   <div class="container">
 
     <!-- HERO -->
@@ -419,12 +422,9 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
     <section class="section">
       <h3>Detalles</h3>
       <h4>Ceremonia & Fiesta</h4>
-      <p>
-        Te esperamos para compartir una noche inolvidable junto a nosotros 🤍
-      </p>
+      <p>Te esperamos para compartir una noche inolvidable junto a nosotros 🤍</p>
 
       <div class="grid-2">
-
         <div class="card">
           <div class="icon">🏛️</div>
           <div class="title">Ceremonia</div>
@@ -433,9 +433,7 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
             House · Barrio Septiembre<br/>
             Buenos Aires
           </div>
-          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">
-            Llegar
-          </a>
+          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">Llegar</a>
         </div>
 
         <div class="card">
@@ -446,11 +444,8 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
             House · Barrio Septiembre<br/>
             Buenos Aires
           </div>
-          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">
-            Llegar
-          </a>
+          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">Llegar</a>
         </div>
-
       </div>
     </section>
 
@@ -458,9 +453,7 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
     <section class="section alt">
       <h3>Nosotros</h3>
       <h4>Un poquito de nuestra historia</h4>
-      <p>
-        Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨
-      </p>
+      <p>Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨</p>
 
       <div class="gallery">
         <img src="foto1.jpg" alt="Sebastián y Belén 1">
@@ -476,9 +469,7 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
     <section class="section">
       <h3>Dress Code</h3>
       <h4>Elegante / Cocktail</h4>
-      <p>
-        Queremos que te sientas cómodo/a, pero con ese toque especial para una noche inolvidable 🥂✨
-      </p>
+      <p>Queremos que te sientas cómodo/a, pero con ese toque especial para una noche inolvidable 🥂✨</p>
     </section>
 
     <!-- REGALO -->
@@ -497,12 +488,8 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
       <h3>Confirmación</h3>
       <h4>Confirmá tu asistencia</h4>
       <div class="rsvp-box">
-        <p>
-          Hacé click en el botón para confirmar por WhatsApp con Belén 💬
-        </p>
-        <a id="rsvpBtn" class="btn" href="#" target="_blank">
-          Confirmar Asistencia
-        </a>
+        <p>Hacé click en el botón para confirmar por WhatsApp con Belén 💬</p>
+        <a id="rsvpBtn" class="btn" href="#" target="_blank">Confirmar Asistencia</a>
       </div>
     </section>
 
@@ -547,30 +534,27 @@ body.theme-glam .card{ border-color: rgba(255,255,255,.08); }
     // ===== RSVP WHATSAPP (BELÉN) =====
     const phone = "5491153265596";
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
-    const waLink = "https://wa.me/" + phone + "?text=" + msg;
+    document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    document.getElementById("rsvpBtn").href = waLink;
+    // ===== THEME SWITCHER (ARREGLADO) =====
+    document.addEventListener("DOMContentLoaded", () => {
+      const key = "seba_belu_theme";
+      const buttons = document.querySelectorAll(".tbtn");
+
+      function applyTheme(name){
+        document.body.classList.remove("theme-romantic","theme-minimal","theme-glam");
+        document.body.classList.add("theme-" + name);
+        buttons.forEach(b => b.classList.toggle("active", b.dataset.theme === name));
+        localStorage.setItem(key, name);
+      }
+
+      const saved = localStorage.getItem(key);
+      applyTheme(saved || "romantic");
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => applyTheme(btn.dataset.theme));
+      });
+    });
   </script>
-// ===== THEME SWITCHER =====
-(function(){
-  const key = "seba_belu_theme";
-  const buttons = document.querySelectorAll(".tbtn");
-
-  function applyTheme(name){
-    document.body.classList.remove("theme-romantic","theme-minimal","theme-glam");
-    document.body.classList.add("theme-" + name);
-
-    buttons.forEach(b => b.classList.toggle("active", b.dataset.theme === name));
-    localStorage.setItem(key, name);
-  }
-
-  // Tema por defecto
-  const saved = localStorage.getItem(key);
-  applyTheme(saved || "romantic");
-
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => applyTheme(btn.dataset.theme));
-  });
-})();
 </body>
 </html>
