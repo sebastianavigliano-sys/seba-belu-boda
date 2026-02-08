@@ -474,6 +474,28 @@
     column-count: 1 !important;
   }
 }
+/* ===== MOVIMIENTO SUTIL EN GALERIA (SAFE) ===== */
+.gallery img{
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* cuando la animación está activa */
+.gallery img.zmove{
+  animation: zMove var(--dur, 10s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+/* keyframes: zoom + micro desplazamiento */
+@keyframes zMove{
+  0%   { transform: scale(1) translate(0px, 0px); }
+  100% { transform: scale(var(--z, 1.06)) translate(var(--tx, 0px), var(--ty, 0px)); }
+}
+
+/* respeta accesibilidad / gente que desactiva animaciones */
+@media (prefers-reduced-motion: reduce){
+  .gallery img.zmove{ animation: none !important; }
+}
 
   </style>
 </head>
@@ -742,6 +764,47 @@
         if(e.key === "ArrowRight") next();
       });
     })();
+        // ===== GALERIA: MINI ZOOM ALEATORIO (SAFE) =====
+    (function(){
+      const imgs = document.querySelectorAll(".gallery img");
+      if(!imgs.length) return;
+
+      // En celular, suave: pocos px y zoom chico
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+      function rnd(min, max){ return Math.random() * (max - min) + min; }
+
+      imgs.forEach((img) => {
+        // valores sutiles
+        const z  = isMobile ? rnd(1.03, 1.06) : rnd(1.04, 1.08);
+        const tx = isMobile ? rnd(-6, 6) : rnd(-10, 10);
+        const ty = isMobile ? rnd(-6, 6) : rnd(-10, 10);
+
+        const dur = isMobile ? rnd(9, 14) : rnd(10, 16);
+        const delay = rnd(0, 4);
+
+        img.style.setProperty("--z", z.toFixed(3));
+        img.style.setProperty("--tx", tx.toFixed(1) + "px");
+        img.style.setProperty("--ty", ty.toFixed(1) + "px");
+        img.style.setProperty("--dur", dur.toFixed(1) + "s");
+        img.style.setProperty("--delay", delay.toFixed(1) + "s");
+
+        img.classList.add("zmove");
+      });
+
+      // Pausar animación si se abre el lightbox (si lo tenés)
+      const overlay = document.getElementById("lightboxOverlay");
+      if(overlay){
+        const toggle = () => {
+          const paused = overlay.classList.contains("open");
+          imgs.forEach(img => img.style.animationPlayState = paused ? "paused" : "running");
+        };
+        // chequeo cada vez que se abre/cierra (simple y no invasivo)
+        const obs = new MutationObserver(toggle);
+        obs.observe(overlay, { attributes:true, attributeFilter:["class"] });
+      }
+    })();
+
   </script>
 
 </body>
