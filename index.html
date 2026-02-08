@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sebastián & Belén · Boda</title>
+  <meta name="description" content="Invitación digital: Sebastián & Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root{
+      --bg: #f6f2ec;
+      --paper: #ffffff;
+      --paper2: #fbf8f3;
+      --text: #1f1f1f;
+      --muted: #6b6b6b;
+
+      --sage: #9aa38f;
+      --sage-dark: #6f7a66;
+
+      --accent: #c9b59b;
+      --accent-dark: #a89174;
+
+      --shadow: 0 12px 35px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container{
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      position: relative;
+      margin: 18px auto 30px auto;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero img{
+      width:100%;
+      height: 640px;
+      object-fit: cover;
+      object-position: 50% 35%;
+      filter: contrast(1.05) saturate(1.05);
+      display:block;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.55));
+    }
+
+    .hero-content{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding: 20px;
+      z-index:2;
+      color: #fff;
+    }
+
+    .hero-content .small{
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .hero-content h1{
+      font-family: "Playfair Display", serif;
+      font-size: 64px;
+      font-weight: 500;
+      margin: 12px 0 8px;
+      letter-spacing: 1px;
+    }
+
+    .hero-content h2{
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      font-weight: 400;
+      opacity: .95;
+    }
+
+    .hero-content .date{
+      margin-top: 18px;
+      font-size: 16px;
+      letter-spacing: 1px;
+      opacity: .95;
+    }
+
+    .countdown{
+      margin-top: 20px;
+      display:flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content:center;
+    }
+
+    .countdown div{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      border-radius: 14px;
+      min-width: 90px;
+    }
+
+    .countdown strong{
+      font-size: 26px;
+      display:block;
+      font-weight: 600;
+    }
+
+    .countdown span{
+      font-size: 12px;
+      opacity: .9;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ===== SECTION ===== */
+    .section{
+      background: var(--paper);
+      border-radius: var(--radius);
+      padding: 40px 26px;
+      margin: 18px auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    .section.alt{
+      background: var(--paper2);
+    }
+
+    .section h3{
+      text-align:center;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 12px;
+    }
+
+    .section h4{
+      text-align:center;
+      font-family: "Playfair Display", serif;
+      font-size: 34px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .section p{
+      text-align:center;
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===== CARDS CEREMONIA/FIESTA ===== */
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .card{
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 20px rgba(0,0,0,.05);
+      text-align:center;
+    }
+
+    .icon{
+      font-size: 28px;
+      margin-bottom: 10px;
+      opacity: .9;
+    }
+
+    .card .title{
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 10px;
+    }
+
+    .card .info{
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: .2s;
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+
+    .btn:hover{
+      transform: translateY(-2px);
+      background: var(--accent-dark);
+    }
+
+    /* ===== GALERIA ===== */
+    .gallery{
+      margin-top: 26px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .gallery img{
+      width:100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    /* ===== RSVP ===== */
+    .rsvp-box{
+      margin-top: 20px;
+      text-align:center;
+    }
+
+    .rsvp-box p{
+      margin-bottom: 18px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer{
+      text-align:center;
+      padding: 30px 0 50px;
+      color: var(--sage-dark);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width: 768px){
+      .hero img{ height: 520px; }
+      .hero-content h1{ font-size: 44px; }
+      .hero-content h2{ font-size: 20px; }
+      .grid-2{ grid-template-columns: 1fr; }
+      .gallery{ grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media(max-width: 480px){
+      .hero img{ height: 520px; }
+      .gallery{ grid-template-columns: 1fr; }
+      .countdown div{ min-width: 75px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <img src="cover.jpg" alt="Sebastián y Belén" />
+
+      <div class="hero-content">
+        <div class="small">¡Nos casamos!</div>
+
+        <h1>Sebastián & Belén</h1>
+        <h2>Bienvenidos a nuestra boda</h2>
+
+        <div class="date">20 de marzo de 2026 · 20:00 hs</div>
+
+        <div class="countdown">
+          <div>
+            <strong id="days">--</strong>
+            <span>Días</span>
+          </div>
+          <div>
+            <strong id="hours">--</strong>
+            <span>Horas</span>
+          </div>
+          <div>
+            <strong id="minutes">--</strong>
+            <span>Min</span>
+          </div>
+          <div>
+            <strong id="seconds">--</strong>
+            <span>Seg</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CEREMONIA Y FIESTA -->
+    <section class="section">
+      <h3>Detalles</h3>
+      <h4>Ceremonia & Fiesta</h4>
+      <p>
+        Te esperamos para compartir una noche inolvidable junto a nosotros 🤍
+      </p>
+
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="icon">🏛️</div>
+          <div class="title">Ceremonia</div>
+          <div class="info">
+            <b>20:00 hs</b><br/>
+            House · Barrio Septiembre<br/>
+            Buenos Aires
+          </div>
+          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">
+            Llegar
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="icon">🥂</div>
+          <div class="title">Fiesta</div>
+          <div class="info">
+            <b>Luego de la ceremonia</b><br/>
+            House · Barrio Septiembre<br/>
+            Buenos Aires
+          </div>
+          <a class="btn" target="_blank" href="https://www.google.com/maps/place/Barrio+Cerrado/@-34.3725919,-58.7825596,16z/data=!4m10!1m2!2m1!1sbarrio+septiembre+!3m6!1s0x95bb602bb5d795ad:0xddc4d83bc291385!8m2!3d-34.3684136!4d-58.7787301!15sChFiYXJyaW8gc2VwdGllbWJyZVoTIhFiYXJyaW8gc2VwdGllbWJyZZIBDGNvdW50cnlfY2x1YpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSMGREZERaRGhuUlJBQuABAPoBBAgAECw!16s%2Fg%2F11c45tpglp?entry=ttu">
+            Llegar
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- NOSOTROS -->
+    <section class="section alt">
+      <h3>Nosotros</h3>
+      <h4>Un poquito de nuestra historia</h4>
+      <p>
+        Momentos, aventuras y recuerdos que nos trajeron hasta este día ✨
+      </p>
+
+      <div class="gallery">
+        <img src="foto1.jpg" alt="Sebastián y Belén 1">
+        <img src="foto2.jpg" alt="Sebastián y Belén 2">
+        <img src="foto3.jpg" alt="Sebastián y Belén 3">
+        <img src="foto4.jpg" alt="Sebastián y Belén 4">
+        <img src="foto5.jpg" alt="Sebastián y Belén 5">
+        <img src="foto6.jpg" alt="Sebastián y Belén 6">
+      </div>
+    </section>
+
+    <!-- DRESS CODE -->
+    <section class="section">
+      <h3>Dress Code</h3>
+      <h4>Elegante / Cocktail</h4>
+      <p>
+        Queremos que te sientas cómodo/a, pero con ese toque especial para una noche inolvidable 🥂✨
+      </p>
+    </section>
+
+    <!-- REGALO -->
+    <section class="section alt">
+      <h3>Regalo</h3>
+      <h4>Tu presencia es nuestro mejor regalo</h4>
+      <p>
+        Si deseás realizarnos un obsequio, podés ayudarnos con nuestra luna de miel ✈️🤍
+        <br/><br/>
+        <b>Alias:</b> <span style="color:var(--accent-dark); font-weight:600;">sebasavinar</span>
+      </p>
+    </section>
+
+    <!-- CONFIRMACION -->
+    <section class="section">
+      <h3>Confirmación</h3>
+      <h4>Confirmá tu asistencia</h4>
+      <div class="rsvp-box">
+        <p>
+          Hacé click en el botón para confirmar por WhatsApp con Belén 💬
+        </p>
+        <a id="rsvpBtn" class="btn" href="#" target="_blank">
+          Confirmar Asistencia
+        </a>
+      </div>
+    </section>
+
+    <div class="footer">
+      ¡Gracias por acompañarnos en este momento tan importante! 🤍✨
+    </div>
+
+  </div>
+
+  <script>
+    // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
+    // 20/03/2026 20:00 AR = 23:00 UTC
+    const targetDate = new Date(Date.UTC(2026, 2, 20, 23, 0, 0));
+
+    function updateCountdown(){
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if(diff <= 0){
+        document.getElementById("days").innerText = "0";
+        document.getElementById("hours").innerText = "0";
+        document.getElementById("minutes").innerText = "0";
+        document.getElementById("seconds").innerText = "0";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById("days").innerText = days;
+      document.getElementById("hours").innerText = String(hours).padStart(2, "0");
+      document.getElementById("minutes").innerText = String(minutes).padStart(2, "0");
+      document.getElementById("seconds").innerText = String(seconds).padStart(2, "0");
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ===== RSVP WHATSAPP (BELÉN) =====
+    const phone = "5491153265596";
+    const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
+    const waLink = "https://wa.me/" + phone + "?text=" + msg;
+
+    document.getElementById("rsvpBtn").href = waLink;
+  </script>
+
+</body>
+</html>
