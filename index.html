@@ -42,7 +42,11 @@
       padding: 0 18px;
     }
 
-    /* ===== HERO ===== */
+    /* =========================================================
+       HERO (ARREGLADO)
+       - Textos arriba
+       - Countdown abajo centrado
+       ========================================================= */
     .hero{
       position: relative;
       margin: 18px auto 30px auto;
@@ -64,7 +68,8 @@
       content:"";
       position:absolute;
       inset:0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.70));
+      background: linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.80));
+      z-index: 1;
     }
 
     .hero-content{
@@ -72,12 +77,21 @@
       inset:0;
       display:flex;
       flex-direction:column;
-      justify-content:center;
+      justify-content:space-between;
       align-items:center;
       text-align:center;
-      padding: 20px;
+      padding: 26px 20px 24px;
       z-index:2;
       color: #fff;
+    }
+
+    .hero-top{
+      width: 100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      margin-top: 6px;
     }
 
     .hero-content .small{
@@ -91,50 +105,51 @@
       font-family: "Playfair Display", serif;
       font-size: 64px;
       font-weight: 500;
-      margin: 12px 0 8px;
+      margin: 12px 0 10px;
       letter-spacing: 1px;
-    }
-
-    .hero-content h2{
-      font-family: "Playfair Display", serif;
-      font-size: 26px;
-      font-weight: 400;
-      opacity: .95;
     }
 
     .hero-content .date{
-      margin-top: 18px;
-      font-size: 16px;
+      margin-top: 4px;
+      font-size: 15px;
       letter-spacing: 1px;
       opacity: .95;
     }
 
-    /* ===== COUNTDOWN ===== */
-    .countdown{
-      margin-top: 20px;
+    /* Countdown abajo centrado */
+    .hero-bottom{
+      width: 100%;
       display:flex;
-      gap: 18px;
+      justify-content:center;
+      align-items:center;
+      padding-bottom: 6px;
+    }
+
+    .countdown{
+      display:flex;
+      gap: 14px;
       flex-wrap: wrap;
       justify-content:center;
     }
 
     .countdown div{
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.10);
       border: 1px solid rgba(255,255,255,.18);
       backdrop-filter: blur(12px);
       padding: 12px 16px;
       border-radius: 14px;
-      min-width: 90px;
+      min-width: 86px;
     }
 
     .countdown strong{
-      font-size: 26px;
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
       display:block;
       font-weight: 600;
     }
 
     .countdown span{
-      font-size: 12px;
+      font-size: 11px;
       opacity: .9;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -238,14 +253,13 @@
     /* ===== MUSICA: botón original oculto ===== */
     #musicBtn{ display:none !important; }
 
-    /* ===== BOTON MUSICA GRANDE (arriba de Nosotros) ===== */
+    /* ===== BOTON MUSICA GRANDE ===== */
     .music-block{
       display: flex;
       justify-content: center;
       margin-bottom: 18px;
     }
 
-    /* Llamativo (dorado + pulso) */
     #musicBtnInline{
       width: 100%;
       max-width: 560px;
@@ -285,7 +299,6 @@
       filter: brightness(1.03);
     }
 
-    /* Cuando está activada la música: se calma */
     #musicBtnInline.is-on{
       animation: none;
       background: rgba(255,255,255,.10);
@@ -304,7 +317,6 @@
       #musicBtnInline{ animation: none; }
     }
 
-    /* ===== Gate visual ===== */
     .music-gate{
       margin: 6px auto 18px;
       max-width: 680px;
@@ -318,16 +330,13 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Bloquea historia hasta activar música */
     .stack.is-locked{
       position: relative;
       pointer-events: none;
       opacity: .55;
     }
 
-    /* =========================================================
-       STACK SLIDER (BLUR BACKGROUND PRO)
-       ========================================================= */
+    /* ===== STACK SLIDER ===== */
     .stack{
       margin-top: 22px;
       margin-bottom: 0;
@@ -507,16 +516,17 @@
     #lbNext{ right: 10px; }
     @media(max-width: 520px){ .lb-nav{ top: 56%; } }
 
+    /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
       .hero-content h1{ font-size: 44px; }
-      .hero-content h2{ font-size: 20px; }
       .grid-2{ grid-template-columns: 1fr; }
     }
 
     @media(max-width: 480px){
       .hero img{ height: 520px; }
-      .countdown div{ min-width: 75px; }
+      .countdown div{ min-width: 75px; padding: 10px 12px; }
+      .countdown strong{ font-size: 26px; }
     }
   </style>
 </head>
@@ -529,7 +539,7 @@
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- Botón original oculto (se usa como lógica central) -->
+  <!-- Botón original oculto -->
   <button id="musicBtn" type="button">🎵 Música</button>
 
   <div class="container">
@@ -539,31 +549,34 @@
       <img src="cover.jpg" alt="Sebastián y Belén" />
 
       <div class="hero-content">
-        <div class="small">¡Nos casamos!</div>
 
-        <h1>Sebastián & Belén</h1>
-        <h2>Bienvenidos a nuestra boda</h2>
+        <div class="hero-top">
+          <div class="small">¡Nos casamos!</div>
+          <h1>Sebastián & Belén</h1>
+          <div class="date">20 de marzo de 2026 · 20:00 hs</div>
+        </div>
 
-        <div class="date">20 de marzo de 2026 · 20:00 hs</div>
-
-        <div class="countdown">
-          <div>
-            <strong id="days">--</strong>
-            <span>Días</span>
-          </div>
-          <div>
-            <strong id="hours">--</strong>
-            <span>Horas</span>
-          </div>
-          <div>
-            <strong id="minutes">--</strong>
-            <span>Min</span>
-          </div>
-          <div>
-            <strong id="seconds">--</strong>
-            <span>Seg</span>
+        <div class="hero-bottom">
+          <div class="countdown">
+            <div>
+              <strong id="days">--</strong>
+              <span>Días</span>
+            </div>
+            <div>
+              <strong id="hours">--</strong>
+              <span>Horas</span>
+            </div>
+            <div>
+              <strong id="minutes">--</strong>
+              <span>Min</span>
+            </div>
+            <div>
+              <strong id="seconds">--</strong>
+              <span>Seg</span>
+            </div>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -683,7 +696,6 @@
   </div>
 
   <script>
-    // Historia bloqueada hasta activar música
     window.__musicUnlockedForStory = false;
 
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
@@ -722,11 +734,11 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== MUSICA ON/OFF (Android safe) + Unlock historia =====
+    // ===== MUSICA + Unlock historia =====
     (function(){
       const music = document.getElementById("bgMusic");
-      const musicBtn = document.getElementById("musicBtn");       // oculto
-      const musicBtnInline = document.getElementById("musicBtnInline"); // visible
+      const musicBtn = document.getElementById("musicBtn");
+      const musicBtnInline = document.getElementById("musicBtnInline");
       if(!music || !musicBtn) return;
 
       let playing = false;
@@ -734,14 +746,14 @@
       function setBtnPlayingUI(){
         if(musicBtnInline){
           musicBtnInline.innerText = "⏸ Música activada";
-          musicBtnInline.classList.add("is-on");   // se calma
+          musicBtnInline.classList.add("is-on");
         }
       }
 
       function setBtnPausedUI(){
         if(musicBtnInline){
           musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
-          musicBtnInline.classList.remove("is-on"); // vuelve a latir
+          musicBtnInline.classList.remove("is-on");
         }
       }
 
@@ -750,7 +762,6 @@
           await music.play();
           playing = true;
 
-          // desbloquea historia (una vez)
           window.__musicUnlockedForStory = true;
           document.dispatchEvent(new Event("music:started"));
 
@@ -764,7 +775,6 @@
       function stopMusic(){
         music.pause();
         playing = false;
-        // Nota: la historia queda desbloqueada aunque pausen (intencional)
         setBtnPausedUI();
       }
 
@@ -784,7 +794,7 @@
       setBtnPausedUI();
     })();
 
-    // ===== STACK SLIDER (solo arranca cuando se activa música) =====
+    // ===== STACK SLIDER =====
     (function(){
       const frame = document.getElementById("stackFrame");
       const dotsWrap = document.getElementById("stackDots");
@@ -799,7 +809,6 @@
       let timer = null;
       const intervalMs = 2200;
 
-      // Bloqueado al inicio
       if(!window.__musicUnlockedForStory){
         stackRoot.classList.add("is-locked");
         if(gate) gate.style.display = "block";
@@ -867,73 +876,6 @@
       }else{
         document.addEventListener("music:started", unlockStory);
       }
-    })();
-
-    // ===== LIGHTBOX (por si reactivás miniaturas) =====
-    (function(){
-      const gallery = document.querySelector(".gallery");
-      if(!gallery) return;
-
-      const imgs = Array.from(gallery.querySelectorAll("img"));
-      if(imgs.length === 0) return;
-
-      const overlay = document.getElementById("lightboxOverlay");
-      const lbImg = document.getElementById("lightboxImg");
-      const caption = document.getElementById("lightboxCaption");
-      const btnClose = document.getElementById("lbClose");
-      const btnPrev = document.getElementById("lbPrev");
-      const btnNext = document.getElementById("lbNext");
-
-      let idx = 0;
-
-      function openAt(i){
-        idx = (i + imgs.length) % imgs.length;
-        const el = imgs[idx];
-        lbImg.src = el.getAttribute("data-full") || el.src;
-        caption.textContent = el.alt ? el.alt : `Foto ${idx+1} de ${imgs.length}`;
-        overlay.classList.add("open");
-        overlay.setAttribute("aria-hidden","false");
-        document.body.style.overflow = "hidden";
-      }
-
-      function close(){
-        overlay.classList.remove("open");
-        overlay.setAttribute("aria-hidden","true");
-        document.body.style.overflow = "";
-        lbImg.src = "";
-      }
-
-      function prev(){ openAt(idx - 1); }
-      function next(){ openAt(idx + 1); }
-
-      imgs.forEach((img, i) => img.addEventListener("click", () => openAt(i)));
-
-      overlay.addEventListener("click", (e) => {
-        if(e.target === overlay) close();
-      });
-
-      btnClose.addEventListener("click", close);
-      btnPrev.addEventListener("click", prev);
-      btnNext.addEventListener("click", next);
-
-      let x0 = null;
-      lbImg.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
-      lbImg.addEventListener("touchend", (e) => {
-        if(x0 === null) return;
-        const x1 = e.changedTouches[0].clientX;
-        const dx = x1 - x0;
-        x0 = null;
-        if(Math.abs(dx) > 40){
-          if(dx > 0) prev(); else next();
-        }
-      }, {passive:true});
-
-      document.addEventListener("keydown", (e) => {
-        if(!overlay.classList.contains("open")) return;
-        if(e.key === "Escape") close();
-        if(e.key === "ArrowLeft") prev();
-        if(e.key === "ArrowRight") next();
-      });
     })();
   </script>
 
