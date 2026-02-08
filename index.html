@@ -7,24 +7,6 @@
   <meta name="description" content="Invitación digital: Sebastián & Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
 
   <style>
-    #contenedorMusica{
-  position: fixed !important;
-  bottom: 20px !important;
-  right: 20px !important;
-  z-index: 999999 !important;
-}
-
-#btnMusica{
-  padding: 12px 18px;
-  border-radius: 30px;
-  border: none;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
-}
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
     :root{
@@ -255,8 +237,6 @@
 
     /* =========================================================
        STACK SLIDER (BLUR BACKGROUND PRO)
-       - Foto principal: contain (NO corta)
-       - Fondo: blur de la misma foto
        ========================================================= */
     .stack{
       margin-top: 22px;
@@ -267,7 +247,7 @@
       position: relative;
       width: 100%;
       height: auto;
-      aspect-ratio: 4 / 5;        /* vertical en celu */
+      aspect-ratio: 4 / 5;
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,.10);
@@ -277,11 +257,10 @@
 
     @media(min-width: 600px){
       .stack-frame{
-        aspect-ratio: 16 / 9;     /* horizontal en pantallas grandes */
+        aspect-ratio: 16 / 9;
       }
     }
 
-    /* fondo blur */
     .stack-frame::before{
       content:"";
       position:absolute;
@@ -295,7 +274,6 @@
       z-index: 0;
     }
 
-    /* capa oscura para que quede glam */
     .stack-frame::after{
       content:"";
       position:absolute;
@@ -309,8 +287,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain; /* clave: NO recorta */
-      padding: 10px;       /* margen interno */
+      object-fit: contain;
+      padding: 10px;
       opacity: 0;
       transform: scale(1.04);
       transition: opacity 650ms ease, transform 1400ms ease;
@@ -345,18 +323,14 @@
       border-color: rgba(255,255,255,.10);
     }
 
-    /* =========================================================
-       MINIATURAS ABAJO (OCULTAS) - SIN ROMPER NADA
-       ========================================================= */
+    /* Miniaturas ocultas */
     .gallery{
       display: none !important;
     }
 
-    /* ===== RSVP ===== */
     .rsvp-box{ margin-top: 20px; text-align:center; }
     .rsvp-box p{ margin-bottom: 18px; }
 
-    /* ===== FOOTER ===== */
     .footer{
       text-align:center;
       padding: 30px 0 50px;
@@ -365,12 +339,12 @@
       letter-spacing: 1px;
     }
 
-    /* ===== BOTON MUSICA (FIX ANDROID SAFE-AREA) ===== */
+    /* ===== BOTON MUSICA (ANDROID SAFE-AREA) ===== */
     #musicBtn{
       position: fixed;
       bottom: calc(18px + env(safe-area-inset-bottom));
       right: calc(18px + env(safe-area-inset-right));
-      z-index: 9999;
+      z-index: 999999; /* blindado */
 
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.20);
@@ -491,85 +465,16 @@
     }
   </style>
 </head>
-<script>
-  const audio = document.getElementById("musica");
-  const btn = document.getElementById("btnMusica");
 
-  btn.addEventListener("click", () => {
-    audio.play().then(() => {
-      btn.innerHTML = "⏸ Pausar música";
-    }).catch(err => {
-      alert("No se pudo iniciar la música. Tocá de nuevo.");
-    });
-  });
-
-  let reproduciendo = false;
-
-  btn.addEventListener("click", () => {
-    if (!reproduciendo) {
-      audio.play();
-      btn.innerHTML = "⏸ Pausar música";
-      reproduciendo = true;
-    } else {
-      audio.pause();
-      btn.innerHTML = "▶ Activar música";
-      reproduciendo = false;
-    }
-  });
-</script>
-  <script>
-  const audio = document.getElementById("musica");
-  const btn = document.getElementById("btnMusica");
-
-  let reproduciendo = false;
-
-  btn.addEventListener("click", () => {
-    if (!reproduciendo) {
-      audio.play();
-      btn.innerHTML = "⏸ Pausar";
-      reproduciendo = true;
-    } else {
-      audio.pause();
-      btn.innerHTML = "▶ Música";
-      reproduciendo = false;
-    }
-  });
-</script>
 <body>
-  <div id="contenedorMusica">
-  <button id="btnMusica">▶ Música</button>
-</div>
 
-<audio id="musica" loop>
-  <source src="musica.mp3" type="audio/mpeg">
-</audio>
-<audio id="musica" loop>
-  <source src="musica.mp3" type="audio/mpeg">
-</audio>
-
-<button id="btnMusica" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  padding: 12px 18px;
-  border-radius: 30px;
-  border: none;
-  background: black;
-  color: white;
-  font-size: 14px;
-  font-family: Arial;
-  cursor: pointer;
-">
-  ▶ Activar música
-</button>
-  <!-- MUSICA -->
+  <!-- MUSICA (solo 1) -->
   <audio id="bgMusic" loop>
     <source src="musica.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
-  <!-- BOTON MUSICA -->
+  <!-- BOTON MUSICA (solo 1) -->
   <button id="musicBtn" type="button">🎵 Música</button>
 
   <div class="container">
@@ -703,7 +608,7 @@
 
   </div>
 
-  <!-- LIGHTBOX (queda aunque miniaturas estén ocultas) -->
+  <!-- LIGHTBOX -->
   <div id="lightboxOverlay" aria-hidden="true">
     <button id="lbClose" class="lb-btn" type="button">✕</button>
     <button id="lbPrev" class="lb-nav" type="button" aria-label="Anterior">‹</button>
@@ -760,8 +665,8 @@
       if(!music || !musicBtn) return;
 
       let playing = false;
-      let unlocked = false;   // se activa con el primer toque real
-      let tried = false;      // intentamos autoplay 1 vez
+      let unlocked = false;
+      let tried = false;
 
       function setBtnPlayingUI(){
         musicBtn.classList.add("active");
@@ -790,9 +695,8 @@
         setBtnPausedUI();
       }
 
-      // Botón manual (lo que ya funcionaba)
       musicBtn.addEventListener("click", async () => {
-        unlocked = true; // click = gesto válido
+        unlocked = true;
         if(!playing){
           const ok = await startMusic();
           if(!ok) stopMusic();
@@ -801,7 +705,6 @@
         }
       });
 
-      // Unlock global: primer toque en cualquier lado (esto “habilita” audio en Android)
       function unlockOnce(){
         unlocked = true;
         document.removeEventListener("touchstart", unlockOnce);
@@ -810,7 +713,6 @@
       document.addEventListener("touchstart", unlockOnce, {passive:true});
       document.addEventListener("pointerdown", unlockOnce, {passive:true});
 
-      // Autoplay al llegar a historia (solo si ya hubo unlock)
       if(target){
         const io = new IntersectionObserver(async (entries) => {
           const e = entries[0];
@@ -839,8 +741,6 @@
 
       let idx = 0;
       let timer = null;
-
-      // cadencia (ajustala si querés)
       const intervalMs = 2200;
 
       slides.forEach((_, i) => {
@@ -857,8 +757,6 @@
       function setActive(i){
         slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
         dots.forEach((d, k) => d.classList.toggle("active", k === i));
-
-        // actualizar blur background con la foto actual
         const src = slides[i].getAttribute("src");
         frame.style.setProperty("--stack-bg", `url('${src}')`);
       }
@@ -889,12 +787,11 @@
       frame.addEventListener("touchstart", stop, {passive:true});
       frame.addEventListener("touchend", start, {passive:true});
 
-      // inicializar blur con la primera foto
       setActive(0);
       start();
     })();
 
-    // ===== LIGHTBOX (queda por si reactivás miniaturas) =====
+    // ===== LIGHTBOX (por si reactivás miniaturas) =====
     (function(){
       const gallery = document.querySelector(".gallery");
       if(!gallery) return;
@@ -941,7 +838,6 @@
       btnPrev.addEventListener("click", prev);
       btnNext.addEventListener("click", next);
 
-      // Swipe
       let x0 = null;
       lbImg.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
       lbImg.addEventListener("touchend", (e) => {
@@ -954,7 +850,6 @@
         }
       }, {passive:true});
 
-      // teclado
       document.addEventListener("keydown", (e) => {
         if(!overlay.classList.contains("open")) return;
         if(e.key === "Escape") close();
