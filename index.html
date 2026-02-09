@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sebastián & Belén · Boda</title>
-  <meta name="description" content="Invitación digital: Sebastián & Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
+  <title>Sebastián y Belén · Boda</title>
+  <meta name="description" content="Invitación digital: Sebastián y Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
     :root{
       --bg:#0f0f12;
@@ -95,18 +95,21 @@
     }
 
     .hero-content .small{
-      font-size: 18px;
+      font-size: 14px;
       letter-spacing: 3px;
       text-transform: uppercase;
       opacity: .92;
+      font-family: "Inter", sans-serif;
     }
 
+    /* NOMBRE PRINCIPAL (GREAT VIBES) */
     .hero-content h1{
-      font-family: "Playfair Display", serif;
-      font-size: 64px;
-      font-weight: 500;
-      margin: 12px 0 10px;
+      font-family: "Great Vibes", cursive;
+      font-size: 76px;
+      font-weight: 400;
+      margin: 10px 0 6px;
       letter-spacing: 1px;
+      line-height: 1.05;
     }
 
     .hero-content .date{
@@ -114,6 +117,7 @@
       font-size: 15px;
       letter-spacing: 1px;
       opacity: .95;
+      font-family: "Inter", sans-serif;
     }
 
     /* Countdown abajo centrado */
@@ -153,6 +157,7 @@
       opacity: .9;
       letter-spacing: 1px;
       text-transform: uppercase;
+      font-family: "Inter", sans-serif;
     }
 
     /* ===== SECTION ===== */
@@ -519,8 +524,12 @@
     /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
-      .hero-content h1{ font-size: 44px; }
+      .hero-content h1{ font-size: 58px; }
       .grid-2{ grid-template-columns: 1fr; }
+    }
+
+    @media(max-width: 420px){
+      .hero-content h1{ font-size: 52px; }
     }
 
     @media(max-width: 480px){
@@ -552,7 +561,7 @@
 
         <div class="hero-top">
           <div class="small">¡Nos casamos!</div>
-          <h1>Sebastián & Belén</h1>
+          <h1>Sebastián y Belén</h1>
           <div class="date">20 de marzo de 2026 · 20:00 hs</div>
         </div>
 
