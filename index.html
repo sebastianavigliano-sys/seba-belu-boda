@@ -111,23 +111,33 @@
     }
 
     /* NOMBRE PRINCIPAL (HUGHSON SOLO ACÁ) */
-    .hero-content h1{
-      font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
-      font-size: 76px;
-      font-weight: 400;
-      font-style: italic;
-      margin: 10px 0 6px;
-      letter-spacing: 1px;
-      line-height: 1.05;
-    }
+   .hero-content h1{
+  font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
 
-    .hero-content .date{
-      margin-top: 4px;
-      font-size: 15px;
-      letter-spacing: 1px;
-      opacity: .95;
-      font-family: "Inter", sans-serif;
-    }
+  /* Grande y “a todo el ancho” sin romper el layout */
+  font-size: clamp(72px, 11.5vw, 150px);
+
+  font-weight: 400;
+  font-style: italic;
+
+  /* No mueve nada alrededor: mismo comportamiento, solo más presencia */
+  margin: 10px 0 10px;
+
+  letter-spacing: 0;
+  line-height: 0.92;
+
+  /* Que use todo el ancho disponible */
+  width: 100%;
+  max-width: 100%;
+  padding: 0 18px;          /* evita que toque los bordes */
+  white-space: nowrap;      /* siempre en una línea */
+  overflow: hidden;         /* por si alguna pantalla es muy chica */
+  text-overflow: clip;
+
+  /* Legibilidad */
+  text-shadow: 0 10px 28px rgba(0,0,0,.60);
+  -webkit-text-stroke: 1px rgba(0,0,0,.18); /* sutil, mejora muchísimo */
+}
 
     /* Countdown abajo centrado */
     .hero-bottom{
