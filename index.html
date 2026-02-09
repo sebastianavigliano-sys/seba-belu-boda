@@ -51,9 +51,7 @@
     }
 
     /* =========================================================
-       HERO (ARREGLADO)
-       - Textos arriba
-       - Countdown abajo centrado
+       HERO
        ========================================================= */
     .hero{
       position: relative;
@@ -110,34 +108,36 @@
       font-family: "Inter", sans-serif;
     }
 
-    /* NOMBRE PRINCIPAL (HUGHSON SOLO ACÁ) */
-   .hero-content h1{
-  font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
+    /* =========================================================
+       NOMBRE CURVADO (SVG)
+       - Solo afecta "Sebastián y Belén"
+       - Curva ajustable tocando el valor Q 500 90
+       ========================================================= */
+    .hero-name{
+      width: 100%;
+      max-width: 100%;
+      height: 220px;
+      padding: 0 18px;
+      margin: 0;
+    }
 
-  /* Grande y “a todo el ancho” sin romper el layout */
-  font-size: clamp(72px, 11.5vw, 150px);
+    .hero-name text{
+      font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
+      font-size: 140px;
+      font-style: italic;
+      fill: white;
 
-  font-weight: 400;
-  font-style: italic;
+      text-shadow: 0 10px 28px rgba(0,0,0,.60);
+      -webkit-text-stroke: 1px rgba(0,0,0,.18);
+    }
 
-  /* No mueve nada alrededor: mismo comportamiento, solo más presencia */
-  margin: 10px 0 10px;
-
-  letter-spacing: 0;
-  line-height: 0.92;
-
-  /* Que use todo el ancho disponible */
-  width: 100%;
-  max-width: 100%;
-  padding: 0 18px;          /* evita que toque los bordes */
-  white-space: nowrap;      /* siempre en una línea */
-  overflow: hidden;         /* por si alguna pantalla es muy chica */
-  text-overflow: clip;
-
-  /* Legibilidad */
-  text-shadow: 0 10px 28px rgba(0,0,0,.60);
-  -webkit-text-stroke: 1px rgba(0,0,0,.18); /* sutil, mejora muchísimo */
-}
+    .hero-content .date{
+      margin-top: 4px;
+      font-size: 15px;
+      letter-spacing: 1px;
+      opacity: .95;
+      font-family: "Inter", sans-serif;
+    }
 
     /* Countdown abajo centrado */
     .hero-bottom{
@@ -543,12 +543,14 @@
     /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
-      .hero-content h1{ font-size: 58px; }
+      .hero-name{ height: 190px; }
+      .hero-name text{ font-size: 110px; }
       .grid-2{ grid-template-columns: 1fr; }
     }
 
     @media(max-width: 420px){
-      .hero-content h1{ font-size: 52px; }
+      .hero-name{ height: 170px; }
+      .hero-name text{ font-size: 96px; }
     }
 
     @media(max-width: 480px){
@@ -580,7 +582,18 @@
 
         <div class="hero-top">
           <div class="small">¡Nos casamos!</div>
-          <h1>Sebastián y Belén</h1>
+
+          <!-- NOMBRE CURVADO -->
+          <svg class="hero-name" viewBox="0 0 1000 250" aria-label="Sebastián y Belén">
+            <!-- CURVA: bajá el 90 para más curva / subilo para menos curva -->
+            <path id="curvePath" d="M 80 170 Q 500 90 920 170" fill="transparent"/>
+            <text>
+              <textPath href="#curvePath" startOffset="50%" text-anchor="middle">
+                Sebastián y Belén
+              </textPath>
+            </text>
+          </svg>
+
           <div class="date">20 de marzo de 2026 · 20:00 hs</div>
         </div>
 
