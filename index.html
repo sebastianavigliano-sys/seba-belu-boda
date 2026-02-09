@@ -110,26 +110,25 @@
 
     /* =========================================================
        NOMBRE CURVADO (SVG)
-       - Solo afecta "Sebastián y Belén"
-       - Curva ajustable tocando el valor Q 500 90
+       - clamp para que en celu NO se achique
        ========================================================= */
     .hero-name{
-  width: 100%;
-  max-width: 100%;
-  height: 260px;      /* antes 220px -> más alto = más grande */
-  padding: 0 18px;
-  margin: 0;
-}
+      width: 100%;
+      max-width: 100%;
+      height: clamp(190px, 20vw, 270px);
+      padding: 0 18px;
+      margin: 0;
+    }
 
-.hero-name text{
-  font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
-  font-size: 175px;   /* antes 140px -> más grande */
-  font-style: italic;
-  fill: #fff;
+    .hero-name text{
+      font-family: "Hughson", "Great Vibes", "Playfair Display", serif;
+      font-size: clamp(115px, 16vw, 175px);
+      font-style: italic;
+      fill: #fff;
 
-  text-shadow: 0 10px 28px rgba(0,0,0,.60);
-  -webkit-text-stroke: 1px rgba(0,0,0,.18);
-}
+      text-shadow: 0 10px 28px rgba(0,0,0,.60);
+      -webkit-text-stroke: 1px rgba(0,0,0,.18);
+    }
 
     .hero-content .date{
       margin-top: 4px;
@@ -543,14 +542,7 @@
     /* ===== RESPONSIVE ===== */
     @media(max-width: 768px){
       .hero img{ height: 520px; }
-      .hero-name{ height: 190px; }
-      .hero-name text{ font-size: 110px; }
       .grid-2{ grid-template-columns: 1fr; }
-    }
-
-    @media(max-width: 420px){
-      .hero-name{ height: 170px; }
-      .hero-name text{ font-size: 96px; }
     }
 
     @media(max-width: 480px){
@@ -583,10 +575,9 @@
         <div class="hero-top">
           <div class="small">¡Nos casamos!</div>
 
-          <!-- NOMBRE CURVADO -->
           <svg class="hero-name" viewBox="0 0 1000 250" aria-label="Sebastián y Belén">
             <!-- CURVA: bajá el 90 para más curva / subilo para menos curva -->
-            <path id="curvePath" d="M 80 170 Q 500 90 920 170" fill="transparent"/>
+            <path id="curvePath" d="M 80 155 Q 500 90 920 155" fill="transparent"/>
             <text>
               <textPath href="#curvePath" startOffset="50%" text-anchor="middle">
                 Sebastián y Belén
