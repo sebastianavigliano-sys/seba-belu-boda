@@ -85,17 +85,18 @@
     }
 
     .hero-content{
-      position:absolute;
-      inset:0;
-      z-index:2;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-      text-align:center;
-      padding: 22px 14px 18px;
-      color:#fff;
-    }
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+
+  justify-content:flex-start;  /* <-- CAMBIO (antes space-between) */
+  align-items:center;
+  text-align:center;
+  padding: 22px 14px 18px;
+  color:#fff;
+}
 
     .hero-top{
       width: 100%;
@@ -138,8 +139,8 @@
 
     /* ✅ Fecha pegada al countdown */
     .hero-content .date{
-      margin-top: 12px;
-      margin-bottom: 6px;  /* antes estaba negativo: ahora queda “pegada” sin cosas raras */
+  margin-top: 12px;
+  margin-bottom: 10px; 
       font-size: 15px;
       letter-spacing: 1px;
       opacity: .96;
@@ -148,12 +149,14 @@
 
     /* Countdown en una sola línea (4 bloques) */
     .hero-bottom{
-      width: 100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding-bottom: 2px;
-    }
+  width: 100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-top: auto;            /* <-- CLAVE: manda el countdown abajo */
+  padding-bottom: 2px;
+}
 
     .countdown{
       display:flex;
