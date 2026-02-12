@@ -7,7 +7,7 @@
   <meta name="description" content="Invitación digital: Sebastián y Belén · 20 de marzo de 2026 · House Barrio Septiembre" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
     /* ===== HUGHSON (LOCAL) ===== */
     @font-face{
@@ -85,34 +85,39 @@
     }
 
     .hero-content{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-
-  justify-content:flex-start;  /* <-- CAMBIO (antes space-between) */
-  align-items:center;
-  text-align:center;
-  padding: 22px 14px 18px;
-  color:#fff;
-}
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      text-align:center;
+      padding: 22px 14px 18px;
+      color:#fff;
+    }
 
     .hero-top{
-  width: 100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  padding-top: 2px;
+      width: 100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding-top: 2px;
+      flex: 1;
+    }
 
-  flex: 1;                 /* <-- CLAVE: ocupa el espacio disponible */
-}
+    .hero-content .small{
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: .92;
+    }
 
-    /* ===== NOMBRE CURVADO (FIX ANDROID: no se achica “de golpe”) ===== */
+    /* ===== NOMBRE CURVADO ===== */
     .hero-name{
       width: 100%;
-      height: clamp(170px, 24vh, 260px); /* un poco más alto para bancar el nombre grande */
+      height: clamp(170px, 24vh, 260px);
       margin: 6px 0 0;
       padding: 0 4px;
       display: block;
@@ -124,32 +129,34 @@
       font-style: italic;
       fill: #fff;
 
-      /* ✅ 2.5x aprox vs antes: subimos el clamp (manteniendo estabilidad en Android) */
-      font-size: clamp(250px, 46vw, 390px);
+      /* +50% */
+      font-size: clamp(270px, 50vw, 420px);
 
       letter-spacing: 1px;
       text-shadow: 0 10px 28px rgba(0,0,0,.62);
       -webkit-text-stroke: 1px rgba(0,0,0,.22);
     }
 
-    /* ✅ Fecha pegada al countdown */
+    /* Fecha abajo */
     .hero-content .date{
-  margin-top: auto !important;   /* <-- CLAVE: la empuja hacia abajo */
-  margin-bottom: 8px !important; /* ajustá 4-12px a gusto */
-  font-size: 15px;
-  letter-spacing: 1px;
-  opacity: .96;
-  text-shadow: 0 8px 22px rgba(0,0,0,.55);
-}
-    /* Countdown en una sola línea (4 bloques) */
+      margin-top: auto !important;
+      margin-bottom: 8px !important;
+      font-size: 15px;
+      letter-spacing: 1px;
+      opacity: .96;
+      text-shadow: 0 8px 22px rgba(0,0,0,.55);
+    }
+
+    /* Countdown */
     .hero-bottom{
-  width: 100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin-top: 0 !important;      /* <-- antes tenías auto */
-  padding-bottom: 2px;
-}
+      width: 100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top: 0 !important;
+      padding-bottom: 2px;
+    }
+
     .countdown{
       display:flex;
       gap: 10px;
@@ -158,8 +165,6 @@
       flex-wrap: nowrap;
       align-items: stretch;
       justify-content: center;
-
-      /* ✅ un toque arriba para que quede pegado a la fecha */
       margin-top: 0;
     }
 
@@ -209,13 +214,16 @@
       margin-bottom: 10px;
     }
 
+    /* ===== H4: SIN SERIF (Montserrat) ===== */
     .section h4{
       text-align:center;
-      font-family: "Playfair Display", serif;
-      font-size: 30px;
-      font-weight: 500;
+      font-family: "Montserrat", "Inter", sans-serif;
+      font-size: 32px;
+      font-weight: 600;
       margin-bottom: 14px;
       color: var(--text);
+      letter-spacing: 0.4px;
+      line-height: 1.15;
     }
 
     .section p{
