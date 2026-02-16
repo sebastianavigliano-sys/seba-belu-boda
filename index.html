@@ -283,6 +283,8 @@
       transition: .2s;
       font-weight: 700;
       box-shadow: 0 10px 20px rgba(0,0,0,.35);
+      cursor:pointer;
+      border:none;
     }
     .btn:active{ transform: translateY(1px); }
     .btn:hover{ background: var(--accent-dark); }
@@ -423,6 +425,7 @@
       gap: 8px;
       justify-content:center;
       margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     .stack-dot{
@@ -453,83 +456,6 @@
       letter-spacing: 1px;
     }
 
-    /* ===== LIGHTBOX ===== */
-    #lightboxOverlay{
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-      background: rgba(0,0,0,.82);
-      backdrop-filter: blur(10px);
-      -webkit-tap-highlight-color: transparent;
-    }
-    #lightboxOverlay.open{ display:flex; }
-
-    #lightboxFigure{
-      width: 100%;
-      max-width: 520px;
-      max-height: 90vh;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      gap: 10px;
-    }
-
-    #lightboxImg{
-      width: 100%;
-      max-height: 78vh;
-      object-fit: contain;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 22px 60px rgba(0,0,0,.55);
-      background: rgba(255,255,255,.04);
-    }
-
-    #lightboxCaption{
-      color: rgba(255,255,255,.75);
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .lb-btn{
-      position: fixed;
-      top: 14px;
-      right: 14px;
-      z-index: 10001;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      color: #fff;
-      padding: 12px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-    }
-
-    .lb-nav{
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10001;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.10);
-      color: #fff;
-      width: 52px;
-      height: 52px;
-      border-radius: 999px;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      user-select: none;
-    }
-    #lbPrev{ left: 10px; }
-    #lbNext{ right: 10px; }
   </style>
 </head>
 
@@ -636,7 +562,7 @@
         Para ver nuestra historia, activá la música con el botón de arriba ✨
       </div>
 
-     <div class="stack" id="stackRoot">
+      <div class="stack" id="stackRoot">
         <div class="stack-frame" id="stackFrame">
           <img class="stack-img is-active" src="foto 1.jpeg"  alt="Sebastián y Belén 1">
           <img class="stack-img" src="foto 2.jpeg"  alt="Sebastián y Belén 2">
@@ -659,35 +585,10 @@
           <img class="stack-img" src="foto 19.jpeg" alt="Sebastián y Belén 19">
           <img class="stack-img" src="foto 20.jpeg" alt="Sebastián y Belén 20">
           <img class="stack-img" src="foto 21.jpeg" alt="Sebastián y Belén 21">
-           <img class="stack-img" src="foto 22.jpeg" alt="Sebastián y Belén 22">
+          <img class="stack-img" src="foto 22.jpeg" alt="Sebastián y Belén 22">
         </div>
 
         <div class="stack-dots" id="stackDots" aria-label="Galería destacada"></div>
-      </div>
-
-      <div class="gallery" aria-hidden="true">
-        <img src="foto 1.jpeg" alt="Sebastián y Belén 1">
-        <img src="foto 2.jpeg" alt="Sebastián y Belén 2">
-        <img src="foto 3.jpeg" alt="Sebastián y Belén 3">
-        <img src="foto 4.jpeg" alt="Sebastián y Belén 4">
-        <img src="foto 5.jpeg" alt="Sebastián y Belén 5">
-        <img src="foto 6.jpeg" alt="Sebastián y Belén 6">
-        <img src="foto 7.jpeg" alt="Sebastián y Belén 7">
-        <img src="foto 8.jpeg" alt="Sebastián y Belén 8">
-        <img src="foto 9.jpeg" alt="Sebastián y Belén 9">
-        <img src="foto 10.jpeg" alt="Sebastián y Belén 10">
-        <img src="foto 11.jpeg" alt="Sebastián y Belén 11">
-        <img src="foto 12.jpeg" alt="Sebastián y Belén 12">
-        <img src="foto 13.jpeg" alt="Sebastián y Belén 13">
-        <img src="foto 14.jpeg" alt="Sebastián y Belén 14">
-        <img src="foto 15.jpeg" alt="Sebastián y Belén 15">
-        <img src="foto 16.jpeg" alt="Sebastián y Belén 16">
-        <img src="foto 17.jpeg" alt="Sebastián y Belén 17">
-        <img src="foto 18.jpeg" alt="Sebastián y Belén 18">
-        <img src="foto 19.jpeg" alt="Sebastián y Belén 19">
-        <img src="foto 20.jpeg" alt="Sebastián y Belén 20">
-        <img src="foto 21.jpeg" alt="Sebastián y Belén 21">
-        <img src="foto 22.jpeg" alt="Sebastián y Belén 22">
       </div>
     </section>
 
@@ -698,15 +599,74 @@
       <p>Queremos que te sientas cómodo/a, pero con ese toque especial para una noche inolvidable 🥂✨</p>
     </section>
 
-    <!-- REGALO -->
-    <section class="section alt">
+    <!-- REGALO PRO (MODIFICADO) -->
+    <section class="section alt" id="regalo">
       <h3>Regalo</h3>
       <h4>Tu presencia es nuestro mejor regalo</h4>
-      <p>
+
+      <p style="margin-bottom:16px;">
         Si deseás realizarnos un obsequio, podés ayudarnos con nuestra luna de miel ✈️🤍
-        <br/><br/>
-        <b>Alias:</b> <span style="color:var(--accent); font-weight:600;">sebasavinar</span>
       </p>
+
+      <div style="
+        margin-top:18px;
+        padding:18px;
+        border-radius:18px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(201,181,155,0.25);
+        box-shadow: 0 0 30px rgba(0,0,0,0.25);
+        text-align:center;
+      ">
+
+        <div style="font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">
+          Alias
+        </div>
+
+        <div style="
+          font-size:16px;
+          font-weight:700;
+          letter-spacing:2px;
+          color:var(--accent);
+          margin-bottom:14px;
+        " id="aliasText">
+          sebasavinar
+        </div>
+
+        <button class="btn" type="button" onclick="copiarAlias()" style="margin-bottom:18px;">
+          Copiar Alias
+        </button>
+
+        <div style="font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">
+          CBU
+        </div>
+
+        <div style="
+          font-size:14px;
+          font-weight:600;
+          letter-spacing:1px;
+          color:var(--text);
+          margin-bottom:14px;
+          word-break: break-word;
+        " id="cbuText" data-cbu="TU_CBU_AQUI">
+          **** **** **** 1234
+        </div>
+
+        <button class="btn" type="button" onclick="copiarCBU()">
+          Copiar CBU
+        </button>
+
+        <div id="copyMsgRegalo" style="
+          margin-top:14px;
+          font-size:13px;
+          font-weight:700;
+          color:var(--accent);
+          opacity:0;
+          transition: .25s ease;
+        ">
+          Copiado ✔
+        </div>
+
+      </div>
     </section>
 
     <!-- CONFIRMACION -->
@@ -725,32 +685,10 @@
 
   </div>
 
-  <!-- LIGHTBOX -->
-  <div id="lightboxOverlay" aria-hidden="true">
-    <button id="lbClose" class="lb-btn" type="button">✕</button>
-    <button id="lbPrev" class="lb-nav" type="button" aria-label="Anterior">‹</button>
-    <button id="lbNext" class="lb-nav" type="button" aria-label="Siguiente">›</button>
-
-    <figure id="lightboxFigure">
-      <img id="lightboxImg" alt="Foto ampliada">
-      <figcaption id="lightboxCaption"></figcaption>
-    </figure>
-  </div>
-
   <script>
     window.__musicUnlockedForStory = false;
 
-    // ===== SCROLL AUTOMÁTICO A GALERÍA AL ACTIVAR MÚSICA =====
-    function scrollToGaleria(){
-      const target = document.getElementById("stackRoot") || document.getElementById("historia");
-      if(!target) return;
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 150);
-    }
-
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
-    // 20/03/2026 20:00 AR = 23:00 UTC
     const targetDate = new Date(Date.UTC(2026, 2, 20, 23, 0, 0));
 
     function updateCountdown(){
@@ -785,7 +723,7 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== MUSICA + Unlock historia + AUTOSCROLL =====
+    // ===== MUSICA =====
     (function(){
       const music = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
@@ -793,7 +731,6 @@
       if(!music || !musicBtn) return;
 
       let playing = false;
-      let didAutoScroll = false;
 
       function setBtnPlayingUI(){
         if(musicBtnInline){
@@ -816,12 +753,6 @@
 
           window.__musicUnlockedForStory = true;
           document.dispatchEvent(new Event("music:started"));
-
-          // Scroll automático (solo 1 vez)
-          if(!didAutoScroll){
-            didAutoScroll = true;
-            scrollToGaleria();
-          }
 
           setBtnPlayingUI();
           return true;
@@ -935,6 +866,37 @@
         document.addEventListener("music:started", unlockStory);
       }
     })();
+
+    // ===== REGALO: COPIAR ALIAS / CBU =====
+    function mostrarCopiado(){
+      const msg = document.getElementById("copyMsgRegalo");
+      if(!msg) return;
+
+      msg.style.opacity = "1";
+
+      setTimeout(() => {
+        msg.style.opacity = "0";
+      }, 2000);
+    }
+
+    function copiarAlias(){
+      const alias = document.getElementById("aliasText").innerText.trim();
+
+      navigator.clipboard.writeText(alias).then(() => {
+        mostrarCopiado();
+      });
+    }
+
+    function copiarCBU(){
+      const el = document.getElementById("cbuText");
+      if(!el) return;
+
+      const cbuReal = el.getAttribute("data-cbu");
+
+      navigator.clipboard.writeText(cbuReal).then(() => {
+        mostrarCopiado();
+      });
+    }
   </script>
 
 </body>
