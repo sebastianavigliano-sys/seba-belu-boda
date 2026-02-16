@@ -453,91 +453,6 @@
       letter-spacing: 1px;
     }
 
-    /* ===== REGALO PRO (ALIAS + COPIAR) ===== */
-    .gift-note{
-      margin-bottom: 16px;
-      color: var(--muted);
-      text-align:center;
-    }
-
-    .alias-box{
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(201,181,155,0.25);
-      box-shadow: 0 0 30px rgba(0,0,0,0.25);
-      text-align:center;
-    }
-
-    .alias-label{
-      display:block;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .alias-row{
-      display:flex;
-      gap: 10px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .alias-value{
-      font-size: clamp(1.1rem, 4.5vw, 1.6rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(201,181,155,0.25);
-      user-select: text;
-    }
-
-    .btn-copy{
-      cursor:pointer;
-      border:none;
-      padding: 10px 16px;
-      border-radius: 14px;
-      font-size: 0.95rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, rgba(201,181,155,0.95), rgba(154,143,126,0.95));
-      color:#0f0f12;
-      transition: transform .15s ease, opacity .2s ease;
-      box-shadow: 0 10px 22px rgba(0,0,0,.35);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .btn-copy:hover{
-      transform: translateY(-1px);
-      opacity: 0.96;
-    }
-
-    .btn-copy:active{
-      transform: translateY(1px);
-    }
-
-    .copy-msg{
-      display:block;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      color: var(--accent);
-      opacity: 0;
-      transform: translateY(-4px);
-      transition: opacity .25s ease, transform .25s ease;
-    }
-
-    .copy-msg.show{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* ===== LIGHTBOX ===== */
     #lightboxOverlay{
       position: fixed;
@@ -751,26 +666,15 @@
       <p>Queremos que te sientas cómodo/a, pero con ese toque especial para una noche inolvidable 🥂✨</p>
     </section>
 
-    <!-- REGALO (PRO + COPIAR ALIAS) -->
-    <section class="section alt" id="regalo">
+    <!-- REGALO -->
+    <section class="section alt">
       <h3>Regalo</h3>
       <h4>Tu presencia es nuestro mejor regalo</h4>
-
-      <p class="gift-note">
-        Lo más importante es que estés con nosotros 🤍<br/>
-        Pero si querés ayudarnos con nuestra luna de miel ✈️
+      <p>
+        Si deseás realizarnos un obsequio, podés ayudarnos con nuestra luna de miel ✈️🤍
+        <br/><br/>
+        <b>Alias:</b> <span style="color:var(--accent); font-weight:600;">sebasavinar</span>
       </p>
-
-      <div class="alias-box">
-        <span class="alias-label">Alias</span>
-
-        <div class="alias-row">
-          <span id="aliasText" class="alias-value">sebasavinar</span>
-          <button class="btn-copy" type="button" onclick="copiarAlias()">Copiar</button>
-        </div>
-
-        <span id="copyMsg" class="copy-msg">Copiado ✔</span>
-      </div>
     </section>
 
     <!-- CONFIRMACION -->
@@ -803,6 +707,15 @@
 
   <script>
     window.__musicUnlockedForStory = false;
+
+    // ===== SCROLL AUTOMÁTICO A GALERÍA AL ACTIVAR MÚSICA =====
+    function scrollToGaleria(){
+      const target = document.getElementById("stackRoot") || document.getElementById("historia");
+      if(!target) return;
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
 
     // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
     // 20/03/2026 20:00 AR = 23:00 UTC
@@ -840,47 +753,7 @@
     const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
     document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-    // ===== REGALO: COPIAR ALIAS (con fallback) =====
-    async function copiarAlias(){
-      const aliasEl = document.getElementById("aliasText");
-      const msgEl = document.getElementById("copyMsg");
-      if(!aliasEl) return;
-
-      const text = (aliasEl.innerText || aliasEl.textContent || "").trim();
-      let ok = false;
-
-      // método moderno
-      try{
-        if(navigator.clipboard && window.isSecureContext){
-          await navigator.clipboard.writeText(text);
-          ok = true;
-        }
-      }catch(e){ ok = false; }
-
-      // fallback (algunos celulares / navegadores)
-      if(!ok){
-        try{
-          const ta = document.createElement("textarea");
-          ta.value = text;
-          ta.setAttribute("readonly","");
-          ta.style.position = "fixed";
-          ta.style.top = "-9999px";
-          document.body.appendChild(ta);
-          ta.select();
-          ta.setSelectionRange(0, ta.value.length);
-          ok = document.execCommand("copy");
-          document.body.removeChild(ta);
-        }catch(e){ ok = false; }
-      }
-
-      if(msgEl){
-        msgEl.textContent = ok ? "Copiado ✔" : "No se pudo copiar";
-        msgEl.classList.add("show");
-        setTimeout(() => msgEl.classList.remove("show"), 2000);
-      }
-    }
-
-    // ===== MUSICA + Unlock historia =====
+    // ===== MUSICA + Unlock historia + AUTOSCROLL =====
     (function(){
       const music = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
@@ -888,6 +761,7 @@
       if(!music || !musicBtn) return;
 
       let playing = false;
+      let didAutoScroll = false;
 
       function setBtnPlayingUI(){
         if(musicBtnInline){
@@ -910,6 +784,12 @@
 
           window.__musicUnlockedForStory = true;
           document.dispatchEvent(new Event("music:started"));
+
+          // Scroll automático (solo 1 vez)
+          if(!didAutoScroll){
+            didAutoScroll = true;
+            scrollToGaleria();
+          }
 
           setBtnPlayingUI();
           return true;
