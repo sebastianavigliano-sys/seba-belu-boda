@@ -691,7 +691,7 @@
 
   </div>
 
- <script>
+<script>
   window.__musicUnlockedForStory = false;
 
   // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
@@ -753,16 +753,17 @@
 
     function setBtnPlayingUI(){
       if(musicBtnInline){
-  musicBtnInline.addEventListener("click", async () => {
-    if(!playing){
-      const ok = await startMusic();
-      if(!ok) stopMusic();
-      // startMusic() ya hace scrollToStory()
-    }else{
-      stopMusic(); // ✅ ahora sí se puede parar
+        musicBtnInline.innerText = "⏸ Música activada";
+        musicBtnInline.classList.add("is-on");
+      }
     }
-  });
-}
+
+    function setBtnPausedUI(){
+      if(musicBtnInline){
+        musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
+        musicBtnInline.classList.remove("is-on");
+      }
+    }
 
     async function startMusic(){
       try{
