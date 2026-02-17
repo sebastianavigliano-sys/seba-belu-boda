@@ -753,17 +753,16 @@
 
     function setBtnPlayingUI(){
       if(musicBtnInline){
-        musicBtnInline.innerText = "⏸ Música activada";
-        musicBtnInline.classList.add("is-on");
-      }
+  musicBtnInline.addEventListener("click", async () => {
+    if(!playing){
+      const ok = await startMusic();
+      if(!ok) stopMusic();
+      // startMusic() ya hace scrollToStory()
+    }else{
+      stopMusic(); // ✅ ahora sí se puede parar
     }
-
-    function setBtnPausedUI(){
-      if(musicBtnInline){
-        musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
-        musicBtnInline.classList.remove("is-on");
-      }
-    }
+  });
+}
 
     async function startMusic(){
       try{
