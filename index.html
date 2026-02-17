@@ -691,219 +691,232 @@
 
   </div>
 
-  <script>
-    window.__musicUnlockedForStory = false;
+ <script>
+  window.__musicUnlockedForStory = false;
 
-    // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
-    const targetDate = new Date(Date.UTC(2026, 2, 20, 23, 0, 0));
+  // ===== CUENTA REGRESIVA (Argentina UTC-3) =====
+  const targetDate = new Date(Date.UTC(2026, 2, 20, 23, 0, 0));
 
-    function updateCountdown(){
-      const now = new Date();
-      const diff = targetDate - now;
+  function updateCountdown(){
+    const now = new Date();
+    const diff = targetDate - now;
 
-      if(diff <= 0){
-        document.getElementById("days").innerText = "0";
-        document.getElementById("hours").innerText = "0";
-        document.getElementById("minutes").innerText = "0";
-        document.getElementById("seconds").innerText = "0";
-        return;
-      }
-
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / (3600 * 24));
-      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = String(hours).padStart(2, "0");
-      document.getElementById("minutes").innerText = String(minutes).padStart(2, "0");
-      document.getElementById("seconds").innerText = String(seconds).padStart(2, "0");
+    if(diff <= 0){
+      document.getElementById("days").innerText = "0";
+      document.getElementById("hours").innerText = "0";
+      document.getElementById("minutes").innerText = "0";
+      document.getElementById("seconds").innerText = "0";
+      return;
     }
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / (3600 * 24));
+    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-    // ===== RSVP WHATSAPP (BELÉN) =====
-    const phone = "5491153265596";
-    const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
-    document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = String(hours).padStart(2, "0");
+    document.getElementById("minutes").innerText = String(minutes).padStart(2, "0");
+    document.getElementById("seconds").innerText = String(seconds).padStart(2, "0");
+  }
 
-    // ===== MUSICA =====
-    (function(){
-      const music = document.getElementById("bgMusic");
-      const musicBtn = document.getElementById("musicBtn");
-      const musicBtnInline = document.getElementById("musicBtnInline");
-      if(!music || !musicBtn) return;
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 
-      let playing = false;
+  // ===== RSVP WHATSAPP (BELÉN) =====
+  const phone = "5491153265596";
+  const msg = encodeURIComponent("Hola Sebastián y Belén! Confirmo mi asistencia al casamiento del 20/03/2026 🥂💍");
+  document.getElementById("rsvpBtn").href = "https://wa.me/" + phone + "?text=" + msg;
 
-      function setBtnPlayingUI(){
-        if(musicBtnInline){
-          musicBtnInline.innerText = "⏸ Música activada";
-          musicBtnInline.classList.add("is-on");
-        }
+  // ===== MUSICA + SCROLL A HISTORIA =====
+  (function(){
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");          // botón oculto (control real)
+    const musicBtnInline = document.getElementById("musicBtnInline"); // botón visible
+    if(!music || !musicBtn) return;
+
+    let playing = false;
+
+    function scrollToStory(){
+      const target =
+        document.getElementById("historia") ||
+        document.getElementById("stackRoot") ||
+        document.querySelector(".stack");
+      if(!target) return;
+
+      // pequeño delay para que se desbloquee el stack antes del scroll
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+
+    function setBtnPlayingUI(){
+      if(musicBtnInline){
+        musicBtnInline.innerText = "⏸ Música activada";
+        musicBtnInline.classList.add("is-on");
       }
+    }
 
-      function setBtnPausedUI(){
-        if(musicBtnInline){
-          musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
-          musicBtnInline.classList.remove("is-on");
-        }
+    function setBtnPausedUI(){
+      if(musicBtnInline){
+        musicBtnInline.innerText = "🎵 Hacé click para ver nuestra historia";
+        musicBtnInline.classList.remove("is-on");
       }
+    }
 
-      async function startMusic(){
-        try{
-          await music.play();
-          playing = true;
+    async function startMusic(){
+      try{
+        await music.play();
+        playing = true;
 
-          window.__musicUnlockedForStory = true;
-          document.dispatchEvent(new Event("music:started"));
+        window.__musicUnlockedForStory = true;
+        document.dispatchEvent(new Event("music:started"));
 
-          setBtnPlayingUI();
-          return true;
-        }catch(e){
-          return false;
-        }
+        setBtnPlayingUI();
+        scrollToStory(); // ✅ ahora sí “va a las imágenes”
+        return true;
+      }catch(e){
+        return false;
       }
+    }
 
-      function stopMusic(){
-        music.pause();
-        playing = false;
-        setBtnPausedUI();
+    function stopMusic(){
+      music.pause();
+      playing = false;
+      setBtnPausedUI();
+    }
+
+    musicBtn.addEventListener("click", async () => {
+      if(!playing){
+        const ok = await startMusic();
+        if(!ok) stopMusic();
+      }else{
+        // si ya estaba sonando y tocás, lo pausás
+        stopMusic();
       }
+    });
 
-      musicBtn.addEventListener("click", async () => {
+    if(musicBtnInline){
+      musicBtnInline.addEventListener("click", async () => {
         if(!playing){
           const ok = await startMusic();
           if(!ok) stopMusic();
         }else{
-          stopMusic();
+          // si ya está activada, lo uso como “ir a la historia”
+          scrollToStory();
         }
       });
-
-      if(musicBtnInline){
-        musicBtnInline.addEventListener("click", () => musicBtn.click());
-      }
-
-      setBtnPausedUI();
-    })();
-
-    // ===== STACK SLIDER =====
-    (function(){
-      const frame = document.getElementById("stackFrame");
-      const dotsWrap = document.getElementById("stackDots");
-      const stackRoot = document.getElementById("stackRoot");
-      const gate = document.getElementById("musicGate");
-      if(!frame || !dotsWrap || !stackRoot) return;
-
-      const slides = Array.from(frame.querySelectorAll(".stack-img"));
-      if(slides.length <= 1) return;
-
-      let idx = 0;
-      let timer = null;
-      const intervalMs = 2200;
-
-      if(!window.__musicUnlockedForStory){
-        stackRoot.classList.add("is-locked");
-        if(gate) gate.style.display = "block";
-      }else{
-        stackRoot.classList.remove("is-locked");
-        if(gate) gate.style.display = "none";
-      }
-
-      slides.forEach((_, i) => {
-        const d = document.createElement("button");
-        d.type = "button";
-        d.className = "stack-dot" + (i === 0 ? " active" : "");
-        d.setAttribute("aria-label", `Ir a foto ${i+1}`);
-        d.addEventListener("click", () => goTo(i, true));
-        dotsWrap.appendChild(d);
-      });
-
-      const dots = Array.from(dotsWrap.querySelectorAll(".stack-dot"));
-
-      function setActive(i){
-        slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
-        dots.forEach((d, k) => d.classList.toggle("active", k === i));
-        const src = slides[i].getAttribute("src");
-        frame.style.setProperty("--stack-bg", `url('${src}')`);
-      }
-
-      function goTo(i, user){
-        idx = (i + slides.length) % slides.length;
-        setActive(idx);
-        if(user) restart();
-      }
-
-      function next(){ goTo(idx + 1, false); }
-
-      function start(){
-        stop();
-        timer = setInterval(next, intervalMs);
-      }
-
-      function stop(){
-        if(timer) clearInterval(timer);
-        timer = null;
-      }
-
-      function restart(){
-        stop();
-        start();
-      }
-
-      frame.addEventListener("touchstart", stop, {passive:true});
-      frame.addEventListener("touchend", start, {passive:true});
-
-      setActive(0);
-
-      function unlockStory(){
-        window.__musicUnlockedForStory = true;
-        stackRoot.classList.remove("is-locked");
-        if(gate) gate.style.display = "none";
-        start();
-        document.removeEventListener("music:started", unlockStory);
-      }
-
-      if(window.__musicUnlockedForStory){
-        start();
-      }else{
-        document.addEventListener("music:started", unlockStory);
-      }
-    })();
-
-    // ===== REGALO: COPIAR ALIAS / CBU =====
-    function mostrarCopiado(){
-      const msg = document.getElementById("copyMsgRegalo");
-      if(!msg) return;
-
-      msg.style.opacity = "1";
-
-      setTimeout(() => {
-        msg.style.opacity = "0";
-      }, 2000);
     }
 
-    function copiarAlias(){
-      const alias = document.getElementById("aliasText").innerText.trim();
+    setBtnPausedUI();
+  })();
 
-      navigator.clipboard.writeText(alias).then(() => {
-        mostrarCopiado();
-      });
+  // ===== STACK SLIDER =====
+  (function(){
+    const frame = document.getElementById("stackFrame");
+    const dotsWrap = document.getElementById("stackDots");
+    const stackRoot = document.getElementById("stackRoot");
+    const gate = document.getElementById("musicGate");
+    if(!frame || !dotsWrap || !stackRoot) return;
+
+    const slides = Array.from(frame.querySelectorAll(".stack-img"));
+    if(slides.length <= 1) return;
+
+    let idx = 0;
+    let timer = null;
+    const intervalMs = 2200;
+
+    if(!window.__musicUnlockedForStory){
+      stackRoot.classList.add("is-locked");
+      if(gate) gate.style.display = "block";
+    }else{
+      stackRoot.classList.remove("is-locked");
+      if(gate) gate.style.display = "none";
     }
 
-    function copiarCBU(){
-      const el = document.getElementById("cbuText");
-      if(!el) return;
+    slides.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "stack-dot" + (i === 0 ? " active" : "");
+      d.setAttribute("aria-label", `Ir a foto ${i+1}`);
+      d.addEventListener("click", () => goTo(i, true));
+      dotsWrap.appendChild(d);
+    });
 
-      const cbuReal = el.getAttribute("data-cbu");
+    const dots = Array.from(dotsWrap.querySelectorAll(".stack-dot"));
 
-      navigator.clipboard.writeText(cbuReal).then(() => {
-        mostrarCopiado();
-      });
+    function setActive(i){
+      slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
+      dots.forEach((d, k) => d.classList.toggle("active", k === i));
+      const src = slides[i].getAttribute("src");
+      frame.style.setProperty("--stack-bg", `url('${src}')`);
     }
-  </script>
 
+    function goTo(i, user){
+      idx = (i + slides.length) % slides.length;
+      setActive(idx);
+      if(user) restart();
+    }
+
+    function next(){ goTo(idx + 1, false); }
+
+    function start(){
+      stop();
+      timer = setInterval(next, intervalMs);
+    }
+
+    function stop(){
+      if(timer) clearInterval(timer);
+      timer = null;
+    }
+
+    function restart(){
+      stop();
+      start();
+    }
+
+    frame.addEventListener("touchstart", stop, {passive:true});
+    frame.addEventListener("touchend", start, {passive:true});
+
+    setActive(0);
+
+    function unlockStory(){
+      window.__musicUnlockedForStory = true;
+      stackRoot.classList.remove("is-locked");
+      if(gate) gate.style.display = "none";
+      start();
+      document.removeEventListener("music:started", unlockStory);
+    }
+
+    if(window.__musicUnlockedForStory){
+      start();
+    }else{
+      document.addEventListener("music:started", unlockStory);
+    }
+  })();
+
+  // ===== REGALO: COPIAR ALIAS / CBU =====
+  function mostrarCopiado(){
+    const msg = document.getElementById("copyMsgRegalo");
+    if(!msg) return;
+
+    msg.style.opacity = "1";
+    setTimeout(() => { msg.style.opacity = "0"; }, 2000);
+  }
+
+  function copiarAlias(){
+    const alias = document.getElementById("aliasText").innerText.trim();
+    navigator.clipboard.writeText(alias).then(() => { mostrarCopiado(); });
+  }
+
+  function copiarCBU(){
+    const el = document.getElementById("cbuText");
+    if(!el) return;
+
+    const cbuReal = el.getAttribute("data-cbu");
+    navigator.clipboard.writeText(cbuReal).then(() => { mostrarCopiado(); });
+  }
+</script>
 </body>
 </html>
